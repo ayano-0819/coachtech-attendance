@@ -4,7 +4,6 @@ use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Fortify Guard
@@ -147,6 +146,7 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
+        Features::emailVerification(), // ←メール認証の為に追加
         // Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
@@ -156,5 +156,4 @@ return [
             // 'window' => 0,
         ]),
     ],
-
 ];

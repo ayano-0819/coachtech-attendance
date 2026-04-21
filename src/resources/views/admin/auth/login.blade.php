@@ -1,33 +1,51 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>管理者ログイン</title>
-</head>
-<body>
-    <h1>管理者ログイン</h1>
+@extends('layouts.app')
 
-    <form method="POST" action="{{ route('login') }}" novalidate>
-        @csrf
-        <input type="hidden" name="login_type" value="admin">
+@section('title', '管理者ログイン')
 
-        <div>
-            <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}">
-            @error('email')
-                <p>{{ $message }}</p>
-            @enderror
+@section('header-nav')
+@endsection
+
+@section('content')
+    <div class="login">
+        <div class="login__inner">
+            <h1 class="login__title">管理者ログイン</h1>
+
+            <form method="POST" action="{{ route('login') }}" novalidate class="login__form">
+                @csrf
+
+                <input type="hidden" name="login_type" value="admin">
+
+                <div class="login__group">
+                    <label for="email" class="login__label">メールアドレス</label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        class="login__input"
+                    >
+                    @error('email')
+                        <p class="login__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="login__group">
+                    <label for="password" class="login__label">パスワード</label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        class="login__input"
+                    >
+                    @error('password')
+                        <p class="login__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="login__button-area">
+                    <button type="submit" class="login__button">管理者ログインする</button>
+                </div>
+            </form>
         </div>
-
-        <div>
-            <label for="password">パスワード</label>
-            <input id="password" type="password" name="password">
-            @error('password')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
-
-        <button type="submit">管理者ログインする</button>
-    </form>
-</body>
-</html>
+    </div>
+@endsection

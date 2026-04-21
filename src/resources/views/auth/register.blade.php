@@ -1,47 +1,77 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>会員登録</title>
-</head>
-<body>
-    <h1>会員登録</h1>
+@extends('layouts.app')
 
-    <form method="POST" action="{{ route('register') }}" novalidate>
-        @csrf
+@section('title', '会員登録')
 
-        <div>
-            <label for="name">名前</label>
-            <input id="name" type="text" name="name" value="{{ old('name') }}">
-            @error('name')
-                <p>{{ $message }}</p>
-            @enderror
+@section('header-nav')
+@endsection
+
+@section('content')
+    <div class="register">
+        <div class="register__inner">
+            <h1 class="register__title">会員登録</h1>
+
+            <form method="POST" action="{{ route('register') }}" novalidate class="register__form">
+                @csrf
+
+                <div class="register__group">
+                    <label for="name" class="register__label">お名前</label>
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        value="{{ old('name') }}"
+                        class="register__input"
+                    >
+                    @error('name')
+                        <p class="register__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="register__group">
+                    <label for="email" class="register__label">メールアドレス</label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        class="register__input"
+                    >
+                    @error('email')
+                        <p class="register__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="register__group">
+                    <label for="password" class="register__label">パスワード</label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        class="register__input"
+                    >
+                    @error('password')
+                        <p class="register__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="register__group">
+                    <label for="password_confirmation" class="register__label">確認用パスワード</label>
+                    <input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        class="register__input"
+                    >
+                </div>
+
+                <div class="register__button-area">
+                    <button type="submit" class="register__button">登録する</button>
+                </div>
+
+                <p class="register__link-text">
+                    <a href="{{ route('login') }}" class="register__link">ログインはこちら</a>
+                </p>
+            </form>
         </div>
-
-        <div>
-            <label for="email">メールアドレス</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}">
-            @error('email')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-            <label for="password">パスワード</label>
-            <input id="password" type="password" name="password">
-            @error('password')
-                <p>{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-            <label for="password_confirmation">パスワード確認</label>
-            <input id="password_confirmation" type="password" name="password_confirmation">
-        </div>
-
-        <button type="submit">登録する</button>
-    </form>
-
-    <a href="{{ route('login') }}">ログインはこちら</a>
-</body>
-</html>
+    </div>
+@endsection
