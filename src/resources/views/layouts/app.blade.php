@@ -12,13 +12,24 @@
     <header class="header">
         <div class="header__inner">
             <div class="header__left">
-                <a href="{{ url('/attendance') }}" class="header__logo-link">
+
+                @auth
+                    @if (Auth::user()->role === 1)
+                        <a href="{{ route('admin.attendance.index') }}" class="header__logo-link">
+                    @else
+                        <a href="{{ route('attendance.create') }}" class="header__logo-link">
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="header__logo-link">
+                @endauth
+
                     <img
                         src="{{ asset('images/COACHTECHヘッダーロゴ.png') }}"
                         alt="COACHTECHのロゴ"
                         class="header__logo"
                     >
                 </a>
+
             </div>
 
             @yield('header-nav')

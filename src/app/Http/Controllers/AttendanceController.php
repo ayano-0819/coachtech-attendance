@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\AttendanceBreak;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -40,6 +40,109 @@ class AttendanceController extends Controller
         }
 
         return view('attendance.create', compact('attendance', 'status'));
+    }
+
+    public function index(Request $request)
+    {
+        $targetMonth = $request->filled('month')
+            ? Carbon::createFromFormat('Y-m', $request->month)->startOfMonth()
+            : Carbon::today()->startOfMonth();
+
+        $startOfMonth = $targetMonth->copy()->startOfMonth();
+        $endOfMonth = $targetMonth->copy()->endOfMonth();
+
+        // 勤怠データ取得
+        $attendances = Attendance::with('attendanceBreaks')
+            ->where('user_id', Auth::id())
+            ->whereBetween('work_date', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->keyBy(function ($item) {
+                return $item->work_date->format('Y-m-d');
+            });
+
+        /*
+        |--------------------------------------------------------------------------
+        | 月の日付一覧を作る
+        |--------------------------------------------------------------------------
+        */
+        $dates = [];
+        $currentDate = $startOfMonth->copy();
+
+        while ($currentDate <= $endOfMonth) {
+            $dateKey = $currentDate->format('Y-m-d');
+
+            $attendance = $attendances->get($dateKey);
+
+            // 休憩・合計計算（ある場合だけ）
+            $breakTime = '';
+            $workTime = '';
+
+            if ($attendance) {
+                $breakSeconds = $attendance->attendanceBreaks->sum(function ($break) {
+                    if ($break->break_start_at && $break->break_end_at) {
+                        return $break->break_end_at->diffInSeconds($break->break_start_at);
+                    }
+                    return 0;
+                });
+
+                if ($attendance->clock_in_at && $attendance->clock_out_at) {
+                    $workSeconds = $attendance->clock_out_at->diffInSeconds($attendance->clock_in_at) - $breakSeconds;
+
+                    $workTime = floor($workSeconds / 3600) . ':' . str_pad(floor(($workSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT);
+                }
+
+                if ($breakSeconds > 0) {
+                    $breakTime = floor($breakSeconds / 3600) . ':' . str_pad(floor(($breakSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT);
+                }
+            }
+
+            $dates[] = [
+                'date' => $currentDate->copy(),
+                'attendance' => $attendance,
+                'break_time' => $breakTime,
+                'work_time' => $workTime,
+            ];
+
+            $currentDate->addDay();
+        }
+
+        $previousMonth = $targetMonth->copy()->subMonth()->format('Y-m');
+        $nextMonth = $targetMonth->copy()->addMonth()->format('Y-m');
+
+        return view('attendance.index', compact(
+            'dates',
+            'targetMonth',
+            'previousMonth',
+            'nextMonth'
+        ));
+    }
+    
+    public function show($id)
+    {
+        $attendance = Attendance::with(['user', 'attendanceBreaks'])
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        $pendingCorrection = \App\Models\CorrectionRequest::with('correctionRequestBreaks')
+            ->where('attendance_id', $attendance->id)
+            ->where('status', 0)
+            ->latest()
+            ->first();
+
+        $displayNote = $attendance->note;
+
+        if ($pendingCorrection) {
+            $attendance->clock_in_at = $pendingCorrection->requested_clock_in_at;
+            $attendance->clock_out_at = $pendingCorrection->requested_clock_out_at;
+            $displayNote = $pendingCorrection->requested_note;
+            $attendance->setRelation('attendanceBreaks', $pendingCorrection->correctionRequestBreaks);
+        }  
+
+        return view('attendance.show', compact(
+            'attendance',
+            'pendingCorrection',
+            'displayNote'
+        ));
     }
 
     public function clockIn()

@@ -38,8 +38,10 @@
                 </form>
             </div>
 
-            @if (session('status'))
-                <p>{{ session('status') }}</p>
+            @if (session('status') === 'verification-link-sent')
+                <p class="verify-email__message">
+                    認証メールを再送しました。
+                </p>
             @endif
 
             @if (session('message'))

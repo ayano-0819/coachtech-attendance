@@ -4,9 +4,9 @@
 
 @section('header-nav')
     <div class="header__right">
-        <a href="/attendance" class="header__link">勤怠</a>
-        <a href="/attendance/list" class="header__link">勤怠一覧</a>
-        <a href="/stamp_correction_request/list" class="header__link">申請</a>
+        <a href="{{ route('attendance.create') }}" class="header__link">勤怠</a>
+        <a href="{{ route('attendance.index') }}" class="header__link">勤怠一覧</a>
+        <a href="{{ route('correction-requests.index') }}" class="header__link">申請</a>
 
         <form method="POST" action="/logout" class="header__logout-form">
             @csrf

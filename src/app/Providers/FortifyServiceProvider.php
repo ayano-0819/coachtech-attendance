@@ -26,6 +26,18 @@ class FortifyServiceProvider extends ServiceProvider
             \Laravel\Fortify\Contracts\CreatesNewUsers::class,
             \App\Actions\Fortify\CreateNewUser::class
         );
+
+         // ログイン後の遷移先を role によって切り替える
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LoginResponse::class,
+            \App\Http\Responses\LoginResponse::class
+        );
+
+        // ログアウト後の遷移先をアクセス元によって切り替える
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LogoutResponse::class,
+            \App\Http\Responses\LogoutResponse::class
+        );
     }
 
     public function boot()
