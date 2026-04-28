@@ -229,80 +229,80 @@ class AdminAttendanceController extends Controller
     * スタッフ別勤怠一覧表示
     */
     public function staffAttendance(Request $request, $id)
-{
-    $user = User::findOrFail($id);
+    {
+        $user = User::findOrFail($id);
 
-    $currentMonth = $request->query('month')
-        ? Carbon::parse($request->query('month'))
-        : Carbon::now();
+        $currentMonth = $request->query('month')
+            ? Carbon::parse($request->query('month'))
+            : Carbon::now();
     
-    $prevMonth = $currentMonth->copy()->subMonth()->format('Y-m');
-    $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
+        $prevMonth = $currentMonth->copy()->subMonth()->format('Y-m');
+        $nextMonth = $currentMonth->copy()->addMonth()->format('Y-m');
 
-    $attendanceRecords = Attendance::with('attendanceBreaks')
-        ->where('user_id', $user->id)
-        ->whereYear('work_date', $currentMonth->year)
-        ->whereMonth('work_date', $currentMonth->month)
-        ->get()
-        ->keyBy(function ($attendance) {
-            return $attendance->work_date->format('Y-m-d');
-        });
+        $attendanceRecords = Attendance::with('attendanceBreaks')
+            ->where('user_id', $user->id)
+            ->whereYear('work_date', $currentMonth->year)
+            ->whereMonth('work_date', $currentMonth->month)
+            ->get()
+            ->keyBy(function ($attendance) {
+                return $attendance->work_date->format('Y-m-d');
+            });
 
-    $attendances = collect();
+        $attendances = collect();
 
-    for (
-        $date = $currentMonth->copy()->startOfMonth();
-        $date->lte($currentMonth->copy()->endOfMonth());
-        $date->addDay()
-    ) {
-        $dateKey = $date->format('Y-m-d');
+        for (
+            $date = $currentMonth->copy()->startOfMonth();
+            date->lte($currentMonth->copy()->endOfMonth());
+            $date->addDay()
+        ) {
+            $dateKey = $date->format('Y-m-d');
 
-        $attendance = $attendanceRecords->get($dateKey);
+            $attendance = $attendanceRecords->get($dateKey);
 
-        if (!$attendance) {
-            $attendance = new Attendance();
-            $attendance->work_date = $date->copy();
-            $attendance->clock_in_at = null;
-            $attendance->clock_out_at = null;
-            $attendance->break_total = '';
-            $attendance->work_total = '';
-            $attendance->setRelation('attendanceBreaks', collect());
+            if (!$attendance) {
+                $attendance = new Attendance();
+                $attendance->work_date = $date->copy();
+                $attendance->clock_in_at = null;
+                $attendance->clock_out_at = null;
+                $attendance->break_total = '';
+                $attendance->work_total = '';
+                $attendance->setRelation('attendanceBreaks', collect());
+
+                $attendances->push($attendance);
+                continue;
+            }
+
+            $breakMinutes = 0;
+
+            foreach ($attendance->attendanceBreaks as $break) {
+                if ($break->break_start_at && $break->break_end_at) {
+                    $breakMinutes += $break->break_start_at->diffInMinutes($break->break_end_at);
+                }
+            }
+
+            $workMinutes = null;
+
+            if ($attendance->clock_in_at && $attendance->clock_out_at) {
+                $workMinutes = $attendance->clock_in_at->diffInMinutes($attendance->clock_out_at) - $breakMinutes;
+            }
+
+            $attendance->break_total = $breakMinutes > 0
+                ? sprintf('%d:%02d', floor($breakMinutes / 60), $breakMinutes % 60)
+                : '';
+
+            $attendance->work_total = $workMinutes !== null
+                ? sprintf('%d:%02d', floor($workMinutes / 60), $workMinutes % 60)
+                : '';
 
             $attendances->push($attendance);
-            continue;
         }
 
-        $breakMinutes = 0;
-
-        foreach ($attendance->attendanceBreaks as $break) {
-            if ($break->break_start_at && $break->break_end_at) {
-                $breakMinutes += $break->break_start_at->diffInMinutes($break->break_end_at);
-            }
-        }
-
-        $workMinutes = null;
-
-        if ($attendance->clock_in_at && $attendance->clock_out_at) {
-            $workMinutes = $attendance->clock_in_at->diffInMinutes($attendance->clock_out_at) - $breakMinutes;
-        }
-
-        $attendance->break_total = $breakMinutes > 0
-            ? sprintf('%d:%02d', floor($breakMinutes / 60), $breakMinutes % 60)
-            : '';
-
-        $attendance->work_total = $workMinutes !== null
-            ? sprintf('%d:%02d', floor($workMinutes / 60), $workMinutes % 60)
-            : '';
-
-        $attendances->push($attendance);
+        return view('admin.attendance.staff', compact(
+            'user',
+            'currentMonth',
+            'attendances',
+            'prevMonth',
+            'nextMonth'
+        ));
     }
-
-    return view('admin.attendance.staff', compact(
-        'user',
-        'currentMonth',
-        'attendances',
-        'prevMonth',
-        'nextMonth'
-    ));
-}
 }

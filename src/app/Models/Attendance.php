@@ -46,4 +46,51 @@ class Attendance extends Model
     {
         return $this->hasMany(CorrectionRequest::class);
     }
+
+    /**
+     * 休憩合計時間を表示用に取得
+     */
+    public function getBreakTotalAttribute()
+    {
+        $totalSeconds = 0;
+
+        foreach ($this->attendanceBreaks as $break) {
+            if ($break->break_start_at && $break->break_end_at) {
+                $totalSeconds += $break->break_start_at->diffInSeconds($break->break_end_at);
+            }
+        }
+
+        return $this->formatSecondsToTime($totalSeconds);
+    }
+
+    /**
+     * 勤務合計時間を表示用に取得
+     */
+    public function getWorkTotalAttribute()
+    {
+        if (!$this->clock_in_at || !$this->clock_out_at) {
+            return '';
+        }
+
+        $workSeconds = $this->clock_in_at->diffInSeconds($this->clock_out_at);
+
+        foreach ($this->attendanceBreaks as $break) {
+            if ($break->break_start_at && $break->break_end_at) {
+                $workSeconds -= $break->break_start_at->diffInSeconds($break->break_end_at);
+            }
+        }
+
+        return $this->formatSecondsToTime($workSeconds);
+    }
+
+    /**
+     * 秒数を H:i 形式に変換
+     */
+    private function formatSecondsToTime($seconds)
+    {
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+
+        return sprintf('%d:%02d', $hours, $minutes);
+    }
 }

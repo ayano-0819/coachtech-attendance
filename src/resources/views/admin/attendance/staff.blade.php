@@ -35,8 +35,7 @@
     <a href="{{ route('admin.attendance.staff', ['id' => $user->id, 'month' => $nextMonth]) }}">
         翌月 →
     </a>
-</div>
-
+    </div>
             <table>
                 <thead>
                     <tr>
@@ -50,24 +49,33 @@
                 </thead>
 
                 <tbody>
-    @foreach ($attendances as $attendance)
-        <tr>
-            <td>{{ $attendance->work_date->isoFormat('MM/DD(ddd)') }}</td>
-            <td>{{ optional($attendance->clock_in_at)->format('H:i') }}</td>
-            <td>{{ optional($attendance->clock_out_at)->format('H:i') }}</td>
-            <td>{{ $attendance->break_total }}</td>
-            <td>{{ $attendance->work_total }}</td>
-            <td>
-                @if ($attendance->id)
-                    <a href="{{ route('admin.attendance.show', ['id' => $attendance->id]) }}">
-                        詳細
-                    </a>
-                @endif
-            </td>
-        </tr>
-    @endforeach
-</tbody>
+                    @foreach ($attendances as $attendance)
+                    <tr>
+                        <td>{{ $attendance->work_date->isoFormat('MM/DD(ddd)') }}</td>
+                        <td>{{ optional($attendance->clock_in_at)->format('H:i') }}</td>
+                        <td>{{ optional($attendance->clock_out_at)->format('H:i') }}</td>
+                        <td>{{ $attendance->break_total }}</td>
+                        <td>{{ $attendance->work_total }}</td>
+                        <td>
+                            @if ($attendance)
+                                <a href="{{ route('admin.attendance.show', ['id' => $attendance->id]) }}">
+                                    詳細
+                                </a>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
+
+            <div class="staff-attendance__csv">
+                <a
+                    href="{{ route('admin.staff.csv', ['id' => $user->id, 'month' => $currentMonth->format('Y-m')]) }}"
+                    class="staff-attendance__csv-button"
+                >
+                    CSV出力
+                </a>
+            </div>
         </div>
     </div>
 @endsection

@@ -108,4 +108,9 @@ Route::middleware(['auth'])->group(function () {
     // 管理者：スタッフ別勤怠一覧画面
     Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance'])
         ->name('admin.attendance.staff');
+
+    // 管理者：スタッフ別勤怠一覧画面CSV出力
+    Route::get('/admin/attendance/staff/{id}/csv', [AdminStaffController::class, 'exportCsv'])
+        ->middleware('auth')
+        ->name('admin.staff.csv');
 });
