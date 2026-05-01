@@ -10,7 +10,7 @@
         <div class="login__inner">
             <h1 class="login__title">管理者ログイン</h1>
 
-            <form method="POST" action="{{ route('login') }}" novalidate class="login__form">
+            <form method="POST" action="{{ route('admin.login.store') }}" novalidate class="login__form">
                 @csrf
 
                 <input type="hidden" name="login_type" value="admin">

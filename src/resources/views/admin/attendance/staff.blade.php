@@ -51,13 +51,15 @@
                 <tbody>
                     @foreach ($attendances as $attendance)
                     <tr>
-                        <td>{{ $attendance->work_date->isoFormat('MM/DD(ddd)') }}</td>
+                        <td>
+                            {{ $attendance->work_date ? \Carbon\Carbon::parse($attendance->work_date)->isoFormat('MM/DD(ddd)') : '' }}
+                        </td>
                         <td>{{ optional($attendance->clock_in_at)->format('H:i') }}</td>
                         <td>{{ optional($attendance->clock_out_at)->format('H:i') }}</td>
-                        <td>{{ $attendance->break_total }}</td>
-                        <td>{{ $attendance->work_total }}</td>
+                        <td>{{ $attendance->break_total ?? '' }}</td>
+                        <td>{{ $attendance->work_total ?? '' }}</td>
                         <td>
-                            @if ($attendance)
+                            @if ($attendance->id)
                                 <a href="{{ route('admin.attendance.show', ['id' => $attendance->id]) }}">
                                     詳細
                                 </a>

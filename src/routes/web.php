@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminStaffController;
@@ -13,7 +14,10 @@ use App\Http\Controllers\CorrectionRequestController;
 */
 Route::get('/admin/login', function () {
     return view('admin.auth.login');
-})->name('admin.login');
+    })->name('admin.login');
+
+Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])
+    ->name('admin.login.store');
 
 /*
 |--------------------------------------------------------------------------
