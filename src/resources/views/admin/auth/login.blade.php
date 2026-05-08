@@ -2,6 +2,10 @@
 
 @section('title', '管理者ログイン')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/admin/auth/login.css') }}">
+@endsection
+
 @section('header-nav')
 @endsection
 

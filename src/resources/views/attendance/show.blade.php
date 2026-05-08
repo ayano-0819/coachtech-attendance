@@ -2,6 +2,10 @@
 
 @section('title', '勤怠詳細')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/attendance/show.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('attendance.create') }}" class="header__link">勤怠</a>
@@ -19,18 +23,6 @@
     <div class="attendance-show">
         <div class="attendance-show__inner">
             <h1 class="attendance-show__title">勤怠詳細</h1>
-
-            @if (session('success'))
-                <p class="attendance-show__success-message">
-                    {{ session('success') }}
-                </p>
-            @endif
-
-            @if (session('error'))
-                <p class="attendance-show__error-message">
-                    {{ session('error') }}
-                </p>
-            @endif
 
             @php
                 // 承認待ちの修正申請があれば、そのデータを表示用に使う
@@ -59,14 +51,16 @@
                 <table class="attendance-show__table">
                     <tr>
                         <th>名前</th>
-                        <td>{{ $attendance->user->name }}</td>
+                        <td class="attendance-show__name">
+                            {{ $attendance->user->name }}
+                        </td>
                     </tr>
 
                     <tr>
                         <th>日付</th>
-                        <td>
-                            {{ $attendance->work_date->format('Y年') }}
-                            {{ $attendance->work_date->format('n月j日') }}
+                        <td class="attendance-show__date">
+                            <span>{{ $attendance->work_date->format('Y年') }}</span>
+                            <span>{{ $attendance->work_date->format('n月j日') }}</span>
                         </td>
                     </tr>
 
@@ -74,9 +68,11 @@
                         <th>出勤・退勤</th>
                         <td>
                             @if ($pendingCorrection)
-                                {{ optional($displayClockInAt)->format('H:i') }}
-                                〜
-                                {{ optional($displayClockOutAt)->format('H:i') }}
+                                <div class="attendance-show__time-text">
+                                    <span>{{ optional($displayClockInAt)->format('H:i') }}</span>
+                                    <span>〜</span>
+                                    <span>{{ optional($displayClockOutAt)->format('H:i') }}</span>
+                                </div>
                             @else
                                 <input
                                     type="time"
@@ -112,9 +108,11 @@
                             <th>{{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}</th>
                             <td>
                                 @if ($pendingCorrection)
-                                    {{ optional($breakStart)->format('H:i') }}
-                                    〜
-                                    {{ optional($breakEnd)->format('H:i') }}
+                                    <div class="attendance-show__time-text">
+                                        <span>{{ optional($breakStart)->format('H:i') }}</span>
+                                        <span>〜</span>
+                                        <span>{{ optional($breakEnd)->format('H:i') }}</span>
+                                    </div>
                                 @else
                                     <input
                                         type="time"
@@ -146,7 +144,9 @@
                             @if ($pendingCorrection)
                                 {{ $pendingCorrection->requested_note }}
                             @else
-                                <textarea name="note" rows="4">{{ old('note') !== null ? old('note') : $attendance->note }}</textarea>
+                                <textarea name="note" rows="4">
+                                    {{ old('note') !== null ? old('note') : $attendance->note }}
+                                </textarea>
 
                             @error('note')
                                 <p class="attendance-show__error">{{ $message }}</p>

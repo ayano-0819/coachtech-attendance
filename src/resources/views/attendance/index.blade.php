@@ -2,6 +2,10 @@
 
 @section('title', '勤怠一覧')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/attendance/index.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('attendance.create') }}" class="header__link">勤怠</a>
@@ -22,15 +26,33 @@
 
             <div class="attendance-index__month-nav">
                 <a href="{{ route('attendance.index', ['month' => $previousMonth]) }}">
-                    ← 前月
+                    <img
+                        src="{{ asset('images/arrow-left.svg') }}"
+                        alt="前月"
+                        class="attendance-index__arrow-icon"
+                    >
+
+                    前月
                 </a>
 
-                <span>
+                <span class="attendance-index__month">
+                    <img
+                        src="{{ asset('images/calendar-icon.png') }}"
+                        alt="カレンダーアイコン"
+                        class="attendance-index__calendar-icon"
+                    >
+
                     {{ $targetMonth->format('Y/m') }}
                 </span>
 
                 <a href="{{ route('attendance.index', ['month' => $nextMonth]) }}">
-                    翌月 →
+                    翌月
+
+                    <img
+                        src="{{ asset('images/arrow-right.svg') }}"
+                        alt="翌月"
+                        class="attendance-index__arrow-icon"
+                    >
                 </a>
             </div>
 

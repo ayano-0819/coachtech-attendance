@@ -1,0 +1,173 @@
+.attendance-index {
+    min-height: calc(100vh - 4rem);
+    padding: 4.5rem 1rem;
+    background-color: #f2f2f5;
+}
+
+.attendance-index__inner {
+    width: min(90%, 56rem);
+    margin: 0 auto;
+}
+
+.attendance-index__title {
+    margin: 0 0 2rem;
+    padding-left: 1rem;
+    border-left: 0.625rem solid #000000;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.attendance-index__month-nav {
+    width: 100%;
+    min-height: 3.5rem;
+    margin-bottom: 2.5rem;
+    padding: 0 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.attendance-index__month-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    color: #8c8c8c;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.attendance-index__month {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    color: #000000;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.attendance-index__calendar-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.attendance-index__arrow-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.attendance-index__table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #ffffff;
+
+    color: #696969;
+    font-size: 1.0625rem;
+    text-align: center;
+}
+
+.attendance-index__table th,
+.attendance-index__table td {
+    height: 3rem;
+    padding: 0.25rem;
+    font-weight: 600;
+}
+
+.attendance-index__table th {
+    color: #696969;
+    background-color: #ffffff;
+    border-bottom: 0.1875rem solid #e5e5e5;
+}
+
+.attendance-index__table td {
+    border-bottom: 0.0625rem solid #e5e5e5;
+}
+
+/* 日付列 */
+.attendance-index__table th:nth-child(1),
+.attendance-index__table td:nth-child(1) {
+    width: 10.5rem;
+    padding-left: 2.25rem;
+    text-align: left;
+}
+
+/* 詳細列 */
+.attendance-index__table th:nth-child(6),
+.attendance-index__table td:nth-child(6) {
+    width: 6rem;
+}
+
+/* 日付データだけ少し大きくする */
+.attendance-index__table td:first-child {
+    font-size: 1.1rem;
+}
+
+.attendance-index__table td a {
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.attendance-index__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* PC要件：1400〜1540px */
+@media screen and (min-width: 87.5rem) and (max-width: 96.25rem) {
+    .attendance-index {
+        padding-top: 4.5rem;
+    }
+
+    .attendance-index__inner {
+        width: min(90%, 56rem);
+    }
+}
+
+/* スマホ幅 */
+@media screen and (max-width: 768px) {
+    .attendance-index {
+        padding: 3rem 1rem;
+    }
+
+    .attendance-index__inner {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .attendance-index__title,
+    .attendance-index__month-nav,
+    .attendance-index__table {
+        min-width: 48rem;
+    }
+
+    .attendance-index__title {
+        font-size: 1.5rem;
+    }
+
+    .attendance-index__month {
+        font-size: 1.125rem;
+    }
+
+    .attendance-index__table {
+        font-size: 0.875rem;
+    }
+
+    .attendance-index__table th,
+    .attendance-index__table td {
+        height: 2.75rem;
+    }
+
+    .attendance-index__table td:first-child {
+        font-size: 1rem;
+    }
+}

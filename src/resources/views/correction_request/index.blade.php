@@ -2,6 +2,10 @@
 
 @section('title', '申請一覧')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/correction_request/index.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('attendance.create') }}" class="header__link">勤怠</a>
@@ -36,50 +40,52 @@
                 </a>
             </div>
 
-            <table class="correction-request-index__table">
-                <thead>
-                    <tr>
-                        <th>状態</th>
-                        <th>名前</th>
-                        <th>対象日時</th>
-                        <th>申請理由</th>
-                        <th>申請日時</th>
-                        <th>詳細</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($correctionRequests as $correctionRequest)
+            <div class="correction-request-index__table-wrap">
+                <table class="correction-request-index__table">
+                    <thead>
                         <tr>
-                            <td>
-                                @if ($correctionRequest->status === 0)
-                                    承認待ち
-                                @elseif ($correctionRequest->status === 1)
-                                    承認済み
-                                @endif
-                            </td>
-
-                            <td>{{ $correctionRequest->user->name }}</td>
-
-                            <td>
-                                {{ optional($correctionRequest->attendance->work_date)->format('Y/m/d') }}
-                            </td>
-
-                            <td>{{ $correctionRequest->requested_note }}</td>
-
-                            <td>
-                                {{ $correctionRequest->created_at->format('Y/m/d') }}
-                            </td>
-
-                            <td>
-                                <a href="{{ route('attendance.show', $correctionRequest->attendance->id) }}">
-                                    詳細
-                                </a>
-                            </td>
+                            <th>状態</th>
+                            <th>名前</th>
+                            <th>対象日時</th>
+                            <th>申請理由</th>
+                            <th>申請日時</th>
+                            <th>詳細</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($correctionRequests as $correctionRequest)
+                            <tr>
+                                <td>
+                                    @if ($correctionRequest->status === 0)
+                                        承認待ち
+                                    @elseif ($correctionRequest->status === 1)
+                                        承認済み
+                                    @endif
+                                </td>
+
+                                <td>{{ $correctionRequest->user->name }}</td>
+
+                                <td>
+                                    {{ optional($correctionRequest->attendance->work_date)->format('Y/m/d') }}
+                                </td>
+
+                                <td>{{ $correctionRequest->requested_note }}</td>
+
+                                <td>
+                                    {{ $correctionRequest->created_at->format('Y/m/d') }}
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('attendance.show', $correctionRequest->attendance->id) }}">
+                                        詳細
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection

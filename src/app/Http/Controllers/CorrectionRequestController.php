@@ -6,7 +6,7 @@ use App\Http\Requests\CorrectionRequest as CorrectionRequestForm;
 use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use App\Models\CorrectionRequest;
-use App\Models\CorrectionRequestBreak;
+use App\Models\CorrectionRequestBreak;      
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

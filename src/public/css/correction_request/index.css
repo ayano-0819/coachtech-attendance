@@ -1,0 +1,110 @@
+.correction-request-index {
+    min-height: calc(100vh - 4rem);
+    padding: 4.5rem 1rem;
+    background-color: #f2f2f5;
+}
+
+.correction-request-index__inner {
+    width: min(90%, 56rem);
+    margin: 0 auto;
+}
+
+.correction-request-index__title {
+    margin: 0 0 2.5rem;
+    padding-left: 1rem;
+    border-left: 0.625rem solid #000000;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.correction-request-index__tabs {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 2rem;
+    padding: 0 3rem 0.75rem;
+    border-bottom: 0.09375rem solid #000000;
+}
+
+.correction-request-index__tab {
+    color: #737373;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.correction-request-index__tab:hover,
+.correction-request-index__tab--active {
+    color: #000000;
+}
+
+.correction-request-index__table-wrap {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+}
+
+.correction-request-index__table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+}
+
+.correction-request-index__table th,
+.correction-request-index__table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 0.125rem solid #c8c8c8;
+    color: #737373;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.correction-request-index__table th:first-child,
+.correction-request-index__table td:first-child {
+    text-align: center;
+}
+
+.correction-request-index__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.correction-request-index__table a {
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .correction-request-index {
+        padding: 3rem 1rem;
+    }
+
+    .correction-request-index__inner {
+        width: 100%;
+    }
+
+    .correction-request-index__title {
+        font-size: 1.5rem;
+    }
+
+    .correction-request-index__tabs {
+        gap: 2rem;
+        padding: 0 1rem 0.75rem;
+    }
+
+    .correction-request-index__table {
+        white-space: nowrap;
+    }
+
+    .correction-request-index__table th,
+    .correction-request-index__table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.8125rem;
+    }
+}

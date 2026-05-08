@@ -2,6 +2,10 @@
 
 @section('title', '勤怠登録')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/attendance/create.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('attendance.create') }}" class="header__link">勤怠</a>

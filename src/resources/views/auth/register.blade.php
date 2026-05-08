@@ -2,6 +2,10 @@
 
 @section('title', '会員登録')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
+@endsection
+
 @section('header-nav')
 @endsection
 
@@ -14,7 +18,7 @@
                 @csrf
 
                 <div class="register__group">
-                    <label for="name" class="register__label">お名前</label>
+                    <label for="name" class="register__label">名前</label>
                     <input
                         id="name"
                         type="text"
@@ -55,7 +59,7 @@
                 </div>
 
                 <div class="register__group">
-                    <label for="password_confirmation" class="register__label">確認用パスワード</label>
+                    <label for="password_confirmation" class="register__label">パスワード確認</label>
                     <input
                         id="password_confirmation"
                         type="password"
