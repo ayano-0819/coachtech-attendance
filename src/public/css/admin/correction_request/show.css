@@ -1,15 +1,15 @@
-.attendance-show {
+.correction-request-show {
     min-height: calc(100vh - 4rem);
     padding: 4.5rem 1rem;
     background-color: #f2f2f5;
 }
 
-.attendance-show__inner {
+.correction-request-show__inner {
     width: min(90%, 56rem);
     margin: 0 auto;
 }
 
-.attendance-show__title {
+.correction-request-show__title {
     margin: 0 0 2rem;
     padding-left: 1rem;
     border-left: 0.625rem solid #000000;
@@ -18,15 +18,7 @@
     line-height: 1.4;
 }
 
-.attendance-show__error {
-    margin: 0.5rem 0 0;
-    color: #ff0000;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: normal;
-}
-
-.attendance-show__table {
+.correction-request-show__table {
     width: 100%;
     overflow: hidden;
     border-collapse: collapse;
@@ -34,16 +26,16 @@
     background-color: #ffffff;
 }
 
-.attendance-show__table tr {
+.correction-request-show__table tr {
     border-bottom: 0.0625rem solid #dddddd;
 }
 
-.attendance-show__table tr:last-child {
+.correction-request-show__table tr:last-child {
     border-bottom: none;
 }
 
-.attendance-show__table th,
-.attendance-show__table td {
+.correction-request-show__table th,
+.correction-request-show__table td {
     padding: 1.25rem 2.5rem;
     font-size: 0.875rem;
     font-weight: 700;
@@ -51,22 +43,22 @@
     vertical-align: middle;
 }
 
-.attendance-show__table th {
+.correction-request-show__table th {
     width: 35%;
     color: #737373;
     text-align: left;
 }
 
-.attendance-show__table td {
+.correction-request-show__table td {
     color: #000000;
 }
 
-.attendance-show__name {
+.correction-request-show__name {
     display: inline-block;
     margin-left: 1.5rem;
 }
 
-.attendance-show__date {
+.correction-request-show__date {
     display: grid;
     grid-template-columns: 6rem 2rem 6rem;
     align-items: center;
@@ -75,23 +67,23 @@
     margin-left: 0;
 }
 
-.attendance-show__date span {
+.correction-request-show__date span {
     text-align: center;
     white-space: nowrap;
 }
 
-.attendance-show__date span:first-child {
+.correction-request-show__date span:first-child {
     grid-column: 1;
     margin-right: 0;
 }
 
-.attendance-show__date span:last-child {
+.correction-request-show__date span:last-child {
     grid-column: 3;
     justify-self: center;
     margin-left: 2rem;
 }
 
-.attendance-show__time-text {
+.correction-request-show__time-text {
     display: grid;
     grid-template-columns: 6rem 2rem 6rem;
     align-items: center;
@@ -99,50 +91,24 @@
     column-gap: 2.5rem;
 }
 
-.attendance-show__time-text span {
+.correction-request-show__time-text span {
     text-align: center;
     white-space: nowrap;
 }
 
-.attendance-show__table input[type="time"] {
-    width: 6rem;
-    height: 1.75rem;
-    padding: 0 0.5rem;
-    border: 0.0625rem solid #dddddd;
-    border-radius: 0.25rem;
-    background-color: #ffffff;
-    font: inherit;
-    text-align: center;
+.correction-request-show__note {
+    padding-left: 2.5rem;
 }
 
-.attendance-show__table input[type="time"] + input[type="time"] {
-    margin-left: 3rem;
-}
-
-.attendance-show__table td > input[type="time"]:first-of-type {
-    margin-right: 3rem;
-}
-
-.attendance-show__table textarea {
-    width: min(100%, 19.5rem);
-    min-height: 4.5rem;
-    padding: 0.5rem;
-    border: 0.0625rem solid #dddddd;
-    border-radius: 0.25rem;
-    font: inherit;
-    text-align: left;
-    resize: vertical;
-}
-
-.attendance-show__button-wrap {
+.correction-request-show__button-wrap {
     display: flex;
     justify-content: flex-end;
     margin-top: 2.25rem;
 }
 
-.attendance-show__submit-button {
-    min-width: 5rem;
-    padding: 0.5rem 2rem;
+.correction-request-show__submit-button {
+    width: 7rem;
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 0.25rem;
     background-color: #000000;
@@ -153,60 +119,55 @@
     cursor: pointer;
 }
 
-.attendance-show__pending-message {
-    margin: 0;
-    color: #ff0000;
-    font-size: 0.875rem;
-    font-weight: 700;
+.correction-request-show__submit-button--disabled {
+    background-color: #696969;
+    color: #ffffff;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-    .attendance-show {
+    .correction-request-show {
         padding: 3rem 1rem;
     }
 
-    .attendance-show__inner {
+    .correction-request-show__inner {
         width: 100%;
     }
 
-    .attendance-show__title {
+    .correction-request-show__title {
         font-size: 1.5rem;
     }
 
-    .attendance-show__date {
+    .correction-request-show__date {
         grid-template-columns: auto auto auto;
         column-gap: 0.5rem;
         margin-left: 0;
     }
 
-    .attendance-show__date span:last-child {
+    .correction-request-show__date span:last-child {
         margin-left: 0;
     }
 
-    .attendance-show__table th,
-    .attendance-show__table td {
+    .correction-request-show__table th,
+    .correction-request-show__table td {
         display: block;
         width: 100%;
         padding: 1rem 1.25rem;
     }
 
-    .attendance-show__table th {
+    .correction-request-show__table th {
         padding-bottom: 0.25rem;
     }
 
-    .attendance-show__table td {
+    .correction-request-show__table td {
         padding-top: 0.25rem;
     }
 
-    .attendance-show__table input[type="time"] {
-        width: 5.5rem;
-    }
-
-    .attendance-show__button-wrap {
+    .correction-request-show__button-wrap {
         justify-content: center;
     }
 
-    .attendance-show__submit-button {
+    .correction-request-show__submit-button {
         width: 100%;
         max-width: 20rem;
     }

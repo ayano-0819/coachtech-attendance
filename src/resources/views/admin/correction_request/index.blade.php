@@ -2,6 +2,10 @@
 
 @section('title', '申請一覧')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/correction_request/index.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('admin.attendance.index') }}" class="header__link">勤怠一覧</a>
@@ -22,59 +26,65 @@
             <h1 class="correction-request-index__title">申請一覧</h1>
 
             <div class="correction-request-index__tabs">
-                <a href="{{ route('correction-requests.index', ['status' => 'pending']) }}"
-                    class="correction-request-index__tab">
+                <a
+                    href="{{ route('correction-requests.index', ['status' => 'pending']) }}"
+                    class="correction-request-index__tab {{ $status === 'pending' ? 'correction-request-index__tab--active' : '' }}"
+                >
                     承認待ち
                 </a>
 
-                <a href="{{ route('correction-requests.index', ['status' => 'approved']) }}"
-                    class="correction-request-index__tab">
+                <a
+                    href="{{ route('correction-requests.index', ['status' => 'approved']) }}"
+                    class="correction-request-index__tab {{ $status === 'approved' ? 'correction-request-index__tab--active' : '' }}"
+                >
                     承認済み
                 </a>
             </div>
 
-            <table class="correction-request-index__table">
-                <tr>
-                    <th>状態</th>
-                    <th>名前</th>
-                    <th>対象日時</th>
-                    <th>申請理由</th>
-                    <th>申請日時</th>
-                    <th>詳細</th>
-                </tr>
-
-                @foreach ($correctionRequests as $correctionRequest)
+            <div class="correction-request-index__table-wrap">
+                <table class="correction-request-index__table">
                     <tr>
-                        <td>
-                            @if ($correctionRequest->status === 0)
-                                承認待ち
-                            @elseif ($correctionRequest->status === 1)
-                                承認済み
-                            @else
-                                却下
-                            @endif
-                        </td>
-
-                        <td>{{ $correctionRequest->user->name }}</td>
-
-                        <td>
-                            {{ $correctionRequest->attendance->work_date->format('Y/m/d') }}
-                        </td>
-
-                        <td>{{ $correctionRequest->requested_note }}</td>
-
-                        <td>
-                            {{ $correctionRequest->created_at->format('Y/m/d') }}
-                        </td>
-
-                        <td>
-                            <a href="/stamp_correction_request/approve/{{ $correctionRequest->id }}">
-                                詳細
-                            </a>
-                        </td>
+                        <th>状態</th>
+                        <th>名前</th>
+                        <th>対象日時</th>
+                        <th>申請理由</th>
+                        <th>申請日時</th>
+                        <th>詳細</th>
                     </tr>
-                @endforeach
-            </table>
+
+                    @foreach ($correctionRequests as $correctionRequest)
+                        <tr>
+                            <td>
+                                @if ($correctionRequest->status === 0)
+                                    承認待ち
+                                @elseif ($correctionRequest->status === 1)
+                                    承認済み
+                                @else
+                                    却下
+                                @endif
+                            </td>
+
+                            <td>{{ $correctionRequest->user->name }}</td>
+
+                            <td>
+                                {{ $correctionRequest->attendance->work_date->format('Y/m/d') }}
+                            </td>
+
+                            <td>{{ $correctionRequest->requested_note }}</td>
+
+                            <td>
+                                {{ $correctionRequest->created_at->format('Y/m/d') }}
+                            </td>
+
+                            <td>
+                                <a href="/stamp_correction_request/approve/{{ $correctionRequest->id }}">
+                                    詳細
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
         </div>
     </div>
 @endsection

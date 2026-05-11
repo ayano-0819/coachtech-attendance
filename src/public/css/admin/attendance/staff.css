@@ -1,0 +1,177 @@
+.admin-attendance-staff {
+    min-height: calc(100vh - 4rem);
+    padding: 4.5rem 1rem;
+    background-color: #f2f2f5;
+}
+
+.admin-attendance-staff__inner {
+    width: min(90%, 56rem);
+    margin: 0 auto;
+}
+
+.admin-attendance-staff__title {
+    margin: 0 0 2rem;
+    padding-left: 1rem;
+    border-left: 0.625rem solid #000000;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.admin-attendance-staff__month-nav {
+    width: 100%;
+    min-height: 3.5rem;
+    margin-bottom: 2.5rem;
+    padding: 0 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-attendance-staff__month-link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #8c8c8c;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-attendance-staff__month {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #000000;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.admin-attendance-staff__calendar-icon,
+.admin-attendance-staff__arrow-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.admin-attendance-staff__table-wrap {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+}
+
+.admin-attendance-staff__table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    color: #696969;
+    font-size: 1.0625rem;
+    text-align: center;
+}
+
+.admin-attendance-staff__table th,
+.admin-attendance-staff__table td {
+    height: 3rem;
+    padding: 0.25rem;
+    font-weight: 600;
+    letter-spacing: normal;
+    vertical-align: middle;
+}
+
+.admin-attendance-staff__table th {
+    color: #696969;
+    background-color: #ffffff;
+    border-bottom: 0.1875rem solid #e5e5e5;
+}
+
+.admin-attendance-staff__table td {
+    border-bottom: 0.0625rem solid #e5e5e5;
+}
+
+.admin-attendance-staff__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-attendance-staff__table a {
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-attendance-staff__table th:nth-child(1),
+.admin-attendance-staff__table td:nth-child(1) {
+    width: 10.5rem;
+    padding-left: 2.25rem;
+    text-align: left;
+}
+
+.admin-attendance-staff__table th:nth-child(6),
+.admin-attendance-staff__table td:nth-child(6) {
+    width: 6rem;
+}
+
+.admin-attendance-staff__csv {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.admin-attendance-staff__csv-button {
+    min-width: 6rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.25rem;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .admin-attendance-staff {
+        padding: 3rem 1rem;
+    }
+
+    .admin-attendance-staff__inner {
+        width: 100%;
+    }
+
+    .admin-attendance-staff__title {
+        font-size: 1.5rem;
+    }
+
+    .admin-attendance-staff__month-nav {
+        min-width: 0;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .admin-attendance-staff__table-wrap {
+        overflow-x: auto;
+    }
+
+    .admin-attendance-staff__table {
+        min-width: 48rem;
+        white-space: nowrap;
+    }
+
+    .admin-attendance-staff__table th,
+    .admin-attendance-staff__table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.8125rem;
+    }
+
+    .admin-attendance-staff__csv {
+        justify-content: center;
+    }
+
+    .admin-attendance-staff__csv-button {
+        width: 100%;
+        max-width: 20rem;
+    }
+}

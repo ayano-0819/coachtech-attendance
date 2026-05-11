@@ -2,6 +2,10 @@
 
 @section('title', '勤怠詳細')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/admin/attendance/show.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('admin.attendance.index') }}" class="header__link">勤怠一覧</a>
@@ -21,112 +25,127 @@
         $isPending = $pendingCorrection ?? false;
     @endphp
 
-    <div class="attendance-detail">
-        <h1>勤怠詳細</h1>
+    <div class="admin-attendance-show">
+        <div class="admin-attendance-show__inner">
+            <h1 class="admin-attendance-show__title">勤怠詳細</h1>
 
-        <form method="POST" action="{{ route('admin.attendance.update', ['id' => $attendance->id]) }}">
-            @csrf
+            <form method="POST" action="{{ route('admin.attendance.update', ['id' => $attendance->id]) }}">
+                @csrf
 
-            <table>
-                <tr>
-                    <th>名前</th>
-                    <td>{{ $attendance->user->name }}</td>
-                </tr>
-
-                <tr>
-                    <th>日付</th>
-                    <td>{{ $attendance->work_date->format('Y年n月j日') }}</td>
-                </tr>
-
-                <tr>
-                    <th>出勤・退勤</th>
-                    <td>
-                        <input
-                            type="time"
-                            name="clock_in_at"
-                            value="{{ old('clock_in_at', optional($attendance->clock_in_at)->format('H:i')) }}"
-                            @if ($isPending) disabled @endif
-                        >
-
-                        〜
-
-                        <input
-                            type="time"
-                            name="clock_out_at"
-                            value="{{ old('clock_out_at', optional($attendance->clock_out_at)->format('H:i')) }}"
-                            @if ($isPending) disabled @endif
-                        >
-
-                        @error('clock_in_at')
-                            <p>{{ $message }}</p>
-                        @enderror
-
-                        @error('clock_out_at')
-                            <p>{{ $message }}</p>
-                        @enderror
-                    </td>
-                </tr>
-
-                @php
-                    $breakCount = $attendance->attendanceBreaks->count();
-                @endphp
-
-                @for ($i = 0; $i <= $breakCount; $i++)
-                    @php
-                        $break = $attendance->attendanceBreaks[$i] ?? null;
-                    @endphp
+                <table class="admin-attendance-show__table">
+                    <tr>
+                        <th>名前</th>
+                        <td class="admin-attendance-show__name">
+                            {{ $attendance->user->name }}
+                        </td>
+                    </tr>
 
                     <tr>
-                        <th>休憩{{ $i + 1 }}</th>
+                        <th>日付</th>
+                        <td>
+                            <div class="admin-attendance-show__date">
+                                <span>{{ $attendance->work_date->format('Y年') }}</span>
+                                <span>{{ $attendance->work_date->format('n月j日') }}</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>出勤・退勤</th>
                         <td>
                             <input
                                 type="time"
-                                name="breaks[{{ $i }}][start]"
-                                value="{{ old("breaks.$i.start", optional($break?->break_start_at)->format('H:i')) }}"
+                                name="clock_in_at"
+                                value="{{ old('clock_in_at', optional($attendance->clock_in_at)->format('H:i')) }}"
                                 @if ($isPending) disabled @endif
                             >
-                            @error("breaks.$i.start")
-                                <p>{{ $message }}</p>
-                            @enderror
 
                             〜
 
                             <input
                                 type="time"
-                                name="breaks[{{ $i }}][end]"
-                                value="{{ old("breaks.$i.end", optional($break?->break_end_at)->format('H:i')) }}"
+                                name="clock_out_at"
+                                value="{{ old('clock_out_at', optional($attendance->clock_out_at)->format('H:i')) }}"
                                 @if ($isPending) disabled @endif
                             >
-                            @error("breaks.$i.end")
-                                <p>{{ $message }}</p>
+
+                            @error('clock_in_at')
+                                <p class="admin-attendance-show__error">{{ $message }}</p>
+                            @enderror
+
+                            @error('clock_out_at')
+                                <p class="admin-attendance-show__error">{{ $message }}</p>
                             @enderror
                         </td>
                     </tr>
-                @endfor
 
-                <tr>
-                    <th>備考</th>
-                    <td>
-                        <textarea
-                            name="note"
-                            @if ($isPending) disabled @endif
-                        >{{ old('note', $attendance->note) }}</textarea>
+                    @php
+                        $breakCount = $attendance->attendanceBreaks->count();
+                    @endphp
 
-                        @error('note')
-                            <p>{{ $message }}</p>
-                        @enderror
+                    @for ($i = 0; $i <= $breakCount; $i++)
+                        @php
+                            $break = $attendance->attendanceBreaks[$i] ?? null;
+                        @endphp
 
-                        @if ($isPending || session('error'))
-                            <p>*承認待ちのため修正はできません。</p>
-                        @endif
-                    </td>
-                </tr>
-            </table>
+                        <tr>
+                            <th>{{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}</th>
+                            <td>
+                                <input
+                                    type="time"
+                                    name="breaks[{{ $i }}][start]"
+                                    value="{{ old("breaks.$i.start", optional($break?->break_start_at)->format('H:i')) }}"
+                                    @if ($isPending) disabled @endif
+                                >
 
-            @if (!$isPending)
-                <button type="submit">修正</button>
-            @endif
-        </form>
+                                〜
+
+                                <input
+                                    type="time"
+                                    name="breaks[{{ $i }}][end]"
+                                    value="{{ old("breaks.$i.end", optional($break?->break_end_at)->format('H:i')) }}"
+                                    @if ($isPending) disabled @endif
+                                >
+
+                                @error("breaks.$i.start")
+                                    <p class="admin-attendance-show__error">{{ $message }}</p>
+                                @enderror
+
+                                @error("breaks.$i.end")
+                                    <p class="admin-attendance-show__error">{{ $message }}</p>
+                                @enderror
+                            </td>
+                        </tr>
+                    @endfor
+
+                    <tr>
+                        <th>備考</th>
+                        <td>
+                            <textarea
+                                name="note"
+                                rows="4"
+                                @if ($isPending) disabled @endif
+                            >{{ old('note', $attendance->note) }}</textarea>
+
+                            @error('note')
+                                <p class="admin-attendance-show__error">{{ $message }}</p>
+                            @enderror
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="admin-attendance-show__button-wrap">
+                    @if ($isPending || session('error'))
+                        <p class="admin-attendance-show__pending-message">
+                            *承認待ちのため修正はできません。
+                        </p>
+                    @else
+                        <button type="submit" class="admin-attendance-show__submit-button">
+                            修正
+                        </button>
+                    @endif
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
-

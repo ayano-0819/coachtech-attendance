@@ -2,9 +2,9 @@
 
 @section('title', 'メール認証')
 
-{{-- @section('css')
+@section('css')
     <link rel="stylesheet" href="{{ asset('css/auth/verify-email.css') }}">
-@endsection --}}
+@endsection
 
 @section('header-nav')
 @endsection
@@ -39,8 +39,8 @@
             </div>
 
             @if (session('status') === 'verification-link-sent')
-                <p class="verify-email__message">
-                    認証メールを再送しました。
+                <p class="verify__status">
+                    認証メールを再送しました
                 </p>
             @endif
 

@@ -144,9 +144,10 @@
                             @if ($pendingCorrection)
                                 {{ $pendingCorrection->requested_note }}
                             @else
-                                <textarea name="note" rows="4">
-                                    {{ old('note') !== null ? old('note') : $attendance->note }}
-                                </textarea>
+                                <textarea
+                                    name="note"
+                                    rows="4"
+                                >{{ old('note', $attendance->note) }}</textarea>
 
                             @error('note')
                                 <p class="attendance-show__error">{{ $message }}</p>

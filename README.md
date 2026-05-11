@@ -106,6 +106,10 @@ php artisan db:seed
 
 ## ログイン情報
 
+### 管理者ユーザー（シーディングデータ）
+- メールアドレス: admin@test.com
+- パスワード: password
+
 ### 一般ユーザー（シーディングデータ）
 - メールアドレス: test1@example.com
 - パスワード: password

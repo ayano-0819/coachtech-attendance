@@ -72,8 +72,9 @@ button {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1.75rem;
+    gap: 2rem;
     flex-shrink: 0;
+    font-weight: 600;
 }
 
 .header__link {

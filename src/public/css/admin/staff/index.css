@@ -1,0 +1,96 @@
+.admin-staff-index {
+    min-height: calc(100vh - 4rem);
+    padding: 4.5rem 1rem;
+    background-color: #f2f2f5;
+}
+
+.admin-staff-index__inner {
+    width: min(90%, 56rem);
+    margin: 0 auto;
+}
+
+.admin-staff-index__table-wrap {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+}
+
+.admin-staff-index__title {
+    margin: 0 0 4rem;
+    padding-left: 1rem;
+    border-left: 0.625rem solid #000000;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.admin-staff-index__table {
+    width: 100%;
+    overflow: hidden;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    color: #696969;
+    font-size: 1.0625rem;
+    text-align: center;
+}
+
+.admin-staff-index__table th,
+.admin-staff-index__table td {
+    height: 3rem;
+    padding: 0.25rem 5rem;
+    border-bottom: 0.0625rem solid #e5e5e5;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    vertical-align: middle;
+}
+
+.admin-staff-index__table th {
+    border-bottom: 0.1875rem solid #e5e5e5;
+    background-color: #ffffff;
+    color: #696969;
+}
+
+.admin-staff-index__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-staff-index__table a {
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 960px) {
+    .admin-staff-index {
+        padding: 3rem 1rem;
+    }
+
+    .admin-staff-index__inner {
+        width: 100%;
+    }
+
+    .admin-staff-index__title {
+        font-size: 1.5rem;
+    }
+
+    .admin-staff-index__table-wrap {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        border-radius: 0.5rem;
+    }
+
+    .admin-staff-index__table {
+        width: 48rem;
+        font-size: 0.875rem;
+    }
+
+    .admin-staff-index__table th,
+    .admin-staff-index__table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.8125rem;
+        white-space: nowrap;
+    }
+}

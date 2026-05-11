@@ -2,6 +2,10 @@
 
 @section('title', 'スタッフ一覧')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/admin/staff/index.css') }}">
+@endsection
+
 @section('header-nav')
     <div class="header__right">
         <a href="{{ route('admin.attendance.index') }}" class="header__link">勤怠一覧</a>
@@ -21,29 +25,31 @@
         <div class="admin-staff-index__inner">
             <h1 class="admin-staff-index__title">スタッフ一覧</h1>
 
-            <table class="admin-staff-index__table">
-                <thead>
-                    <tr>
-                        <th>名前</th>
-                        <th>メールアドレス</th>
-                        <th>月次勤怠</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($staffs as $staff)
+            <div class="admin-staff-index__table-wrap">
+                <table class="admin-staff-index__table">
+                    <thead>
                         <tr>
-                            <td>{{ $staff->name }}</td>
-                            <td>{{ $staff->email }}</td>
-                            <td>
-                                <a href="{{ route('admin.attendance.staff', ['id' => $staff->id]) }}">
-                                    詳細
-                                </a>
-                            </td>
+                            <th>名前</th>
+                            <th>メールアドレス</th>
+                            <th>月次勤怠</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($staffs as $staff)
+                            <tr>
+                                <td>{{ $staff->name }}</td>
+                                <td>{{ $staff->email }}</td>
+                                <td>
+                                    <a href="{{ route('admin.attendance.staff', ['id' => $staff->id]) }}">
+                                        詳細
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
