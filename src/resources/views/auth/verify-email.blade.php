@@ -30,7 +30,11 @@
             </div>
 
             <div class="verify__resend-area">
-                <form method="POST" action="{{ route('verification.send') }}" class="verify__form">
+                <form
+                    method="POST"
+                    action="{{ route('verification.send') }}"
+                    class="verify__form"
+                >
                     @csrf
                     <button type="submit" class="verify__resend-button">
                         認証メールを再送する
@@ -42,14 +46,7 @@
                 <p class="verify__status">
                     認証メールを再送しました
                 </p>
-            @endif
-
-            @if (session('message'))
-                <p class="verify__status">
-                    {{ session('message') }}
-                </p>
-            @endif
-            
+            @endif            
         </div>
     </div>
 @endsection

@@ -24,7 +24,10 @@
         <div class="correction-request-index__inner">
             <h1 class="correction-request-index__title">申請一覧</h1>
 
-            <div class="correction-request-index__tabs">
+            <nav
+                class="correction-request-index__tabs"
+                aria-label="申請状態切り替え"
+            >
                 <a
                     href="{{ route('correction-requests.index', ['status' => 'pending']) }}"
                     class="correction-request-index__tab {{ $status === 'pending' ? 'correction-request-index__tab--active' : '' }}"
@@ -38,7 +41,7 @@
                 >
                     承認済み
                 </a>
-            </div>
+            </nav>
 
             <div class="correction-request-index__table-wrap">
                 <table class="correction-request-index__table">
@@ -56,13 +59,7 @@
                     <tbody>
                         @foreach ($correctionRequests as $correctionRequest)
                             <tr>
-                                <td>
-                                    @if ($correctionRequest->status === 0)
-                                        承認待ち
-                                    @elseif ($correctionRequest->status === 1)
-                                        承認済み
-                                    @endif
-                                </td>
+                                <td>{{ $correctionRequest->status_label }}</td>
 
                                 <td>{{ $correctionRequest->user->name }}</td>
 
@@ -77,9 +74,11 @@
                                 </td>
 
                                 <td>
-                                    <a href="{{ route('attendance.show', $correctionRequest->attendance->id) }}">
-                                        詳細
-                                    </a>
+                                    @if ($correctionRequest->attendance)
+                                        <a href="{{ route('attendance.show', $correctionRequest->attendance->id) }}">
+                                            詳細
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

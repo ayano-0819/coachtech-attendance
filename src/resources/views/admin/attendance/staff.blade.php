@@ -27,7 +27,10 @@
                 {{ $user->name }}さんの勤怠
             </h1>
 
-            <div class="admin-attendance-staff__month-nav">
+            <nav
+                class="admin-attendance-staff__month-nav"
+                aria-label="月切り替え"
+            >
                 <a
                     href="{{ route('admin.attendance.staff', ['id' => $user->id, 'month' => $prevMonth]) }}"
                     class="admin-attendance-staff__month-link"
@@ -44,7 +47,7 @@
                 <span class="admin-attendance-staff__month">
                     <img
                         src="{{ asset('images/calendar-icon.png') }}"
-                        alt="カレンダーアイコン"
+                        alt="カレンダー"
                         class="admin-attendance-staff__calendar-icon"
                     >
 
@@ -63,7 +66,7 @@
                         class="admin-attendance-staff__arrow-icon"
                     >
                 </a>
-            </div>
+            </nav>
 
             <div class="admin-attendance-staff__table-wrap">
                 <table class="admin-attendance-staff__table">
@@ -82,7 +85,7 @@
                         @foreach ($attendances as $attendance)
                             <tr>
                                 <td>
-                                    {{ $attendance->work_date ? \Carbon\Carbon::parse($attendance->work_date)->isoFormat('MM/DD(ddd)') : '' }}
+                                    {{ $attendance->formatted_work_date }}
                                 </td>
                                 <td>{{ optional($attendance->clock_in_at)->format('H:i') }}</td>
                                 <td>{{ optional($attendance->clock_out_at)->format('H:i') }}</td>
@@ -97,11 +100,9 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($attendance->id)
-                                        <a href="{{ route('admin.attendance.show', ['id' => $attendance->id]) }}">
-                                            詳細
-                                        </a>
-                                    @endif
+                                    <a href="{{ route('admin.attendance.show', ['id' => $attendance->id]) }}">
+                                        詳細
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

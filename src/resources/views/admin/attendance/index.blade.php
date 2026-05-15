@@ -28,7 +28,7 @@
                 {{ $targetDate->format('Y年n月j日') }}の勤怠
             </h1>
 
-            <div class="admin-attendance-index__date-nav">
+            <nav class="admin-attendance-index__date-nav" aria-label="日付切り替え">
                 <a
                     href="{{ route('admin.attendance.index', ['date' => $previousDate]) }}"
                     class="admin-attendance-index__date-link"
@@ -45,7 +45,7 @@
                 <span class="admin-attendance-index__date-current">
                     <img
                         src="{{ asset('images/calendar-icon.png') }}"
-                        alt="カレンダーアイコン"
+                        alt="カレンダー"
                         class="admin-attendance-index__calendar-icon"
                     >
 
@@ -64,7 +64,7 @@
                         class="admin-attendance-index__arrow-icon"
                     >
                 </a>
-            </div>
+            </nav>
 
             <div class="admin-attendance-index__table-wrap">
                 <table class="admin-attendance-index__table">
@@ -83,10 +83,10 @@
                         @forelse ($attendances as $attendance)
                             <tr>
                                 <td>{{ $attendance->user->name }}</td>
-                                <td>{{ $attendance->clock_in_at ? $attendance->clock_in_at->format('H:i') : '' }}</td>
-                                <td>{{ $attendance->clock_out_at ? $attendance->clock_out_at->format('H:i') : '' }}</td>
-                                <td>{{ $attendance->formatted_break_time }}</td>
-                                <td>{{ $attendance->formatted_work_time }}</td>
+                                <td>{{ optional($attendance->clock_in_at)->format('H:i') }}</td>
+                                <td>{{ optional($attendance->clock_out_at)->format('H:i') }}</td>
+                                <td>{{ $attendance->break_total }}</td>
+                                <td>{{ $attendance->work_total }}</td>
                                 <td>
                                     <a href="{{ route('admin.attendance.show', ['id' => $attendance->id]) }}">
                                         詳細

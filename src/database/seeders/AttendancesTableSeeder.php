@@ -19,7 +19,6 @@ class AttendancesTableSeeder extends Seeder
 
                 $date = Carbon::create(2026, 5, $day);
 
-                // 土日はスキップ
                 if ($date->isWeekend()) {
                     continue;
                 }

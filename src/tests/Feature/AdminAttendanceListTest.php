@@ -18,7 +18,7 @@ class AdminAttendanceListTest extends TestCase
     public function test_admin_can_see_all_users_attendance_for_the_day()
     {
         $admin = User::factory()->create([
-            'role' => 1,
+            'role' => User::ROLE_ADMIN,
         ]);
 
         $user1 = User::factory()->create([
@@ -64,7 +64,7 @@ class AdminAttendanceListTest extends TestCase
         Carbon::setTestNow(Carbon::create(2026, 4, 28));
 
         $admin = User::factory()->create([
-            'role' => 1,
+            'role' => User::ROLE_ADMIN,
         ]);
 
         $response = $this->actingAs($admin)->get('/admin/attendance/list');
@@ -81,7 +81,7 @@ class AdminAttendanceListTest extends TestCase
     public function test_previous_day_attendance_is_displayed()
     {
         $admin = User::factory()->create([
-            'role' => 1,
+            'role' => User::ROLE_ADMIN,
         ]);
 
         $user = User::factory()->create([
@@ -110,7 +110,7 @@ class AdminAttendanceListTest extends TestCase
     public function test_next_day_attendance_is_displayed()
     {
         $admin = User::factory()->create([
-            'role' => 1,
+            'role' => User::ROLE_ADMIN,
         ]);
 
         $user = User::factory()->create([

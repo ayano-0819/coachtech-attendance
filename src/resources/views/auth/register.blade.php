@@ -14,7 +14,12 @@
         <div class="register__inner">
             <h1 class="register__title">会員登録</h1>
 
-            <form method="POST" action="{{ route('register') }}" novalidate class="register__form">
+            <form
+                method="POST"
+                action="{{ route('register') }}"
+                novalidate
+                class="register__form"
+            >
                 @csrf
 
                 <div class="register__group">

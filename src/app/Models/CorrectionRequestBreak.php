@@ -20,9 +20,6 @@ class CorrectionRequestBreak extends Model
         'requested_break_end_at' => 'datetime',
     ];
 
-    /**
-     * この休憩修正が属する修正申請
-     */
     public function correctionRequest()
     {
         return $this->belongsTo(CorrectionRequest::class);

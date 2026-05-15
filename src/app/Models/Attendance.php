@@ -23,33 +23,21 @@ class Attendance extends Model
         'clock_out_at' => 'datetime',
     ];
 
-    /**
-     * この勤怠を登録したユーザー
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * この勤怠に紐づく休憩一覧
-     */
     public function attendanceBreaks()
     {
         return $this->hasMany(AttendanceBreak::class);
     }
 
-    /**
-     * この勤怠に対する修正申請一覧
-     */
     public function correctionRequests()
     {
         return $this->hasMany(CorrectionRequest::class);
     }
 
-    /**
-     * 休憩合計時間を表示用に取得
-     */
     public function getBreakTotalAttribute()
     {
         $totalSeconds = 0;
@@ -63,9 +51,6 @@ class Attendance extends Model
         return $this->formatSecondsToTime($totalSeconds);
     }
 
-    /**
-     * 勤務合計時間を表示用に取得
-     */
     public function getWorkTotalAttribute()
     {
         if (!$this->clock_in_at || !$this->clock_out_at) {
@@ -83,10 +68,24 @@ class Attendance extends Model
         return $this->formatSecondsToTime($workSeconds);
     }
 
-    /**
-     * 秒数を H:i 形式に変換
-     */
-    private function formatSecondsToTime($seconds)
+    public function getFormattedWorkDateAttribute()
+    {
+        return $this->work_date
+            ? $this->work_date->isoFormat('MM/DD(ddd)')
+            : '';
+    }
+
+    public function getClockInTimeAttribute()
+    {
+        return optional($this->clock_in_at)->format('H:i');
+    }
+
+    public function getClockOutTimeAttribute()
+    {
+        return optional($this->clock_out_at)->format('H:i');
+    }
+
+    private function formatSecondsToTime(int $seconds): string
     {
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds % 3600) / 60);

@@ -21,10 +21,6 @@
 @endsection
 
 @section('content')
-    @php
-        $isPending = $pendingCorrection ?? false;
-    @endphp
-
     <div class="admin-attendance-show">
         <div class="admin-attendance-show__inner">
             <h1 class="admin-attendance-show__title">勤怠詳細</h1>
@@ -79,22 +75,14 @@
                         </td>
                     </tr>
 
-                    @php
-                        $breakCount = $attendance->attendanceBreaks->count();
-                    @endphp
-
-                    @for ($i = 0; $i <= $breakCount; $i++)
-                        @php
-                            $break = $attendance->attendanceBreaks[$i] ?? null;
-                        @endphp
-
+                    @foreach ($displayBreaks as $index => $break)
                         <tr>
-                            <th>{{ $i === 0 ? '休憩' : '休憩' . ($i + 1) }}</th>
+                            <th>{{ $index === 0 ? '休憩' : '休憩' . ($index + 1) }}</th>
                             <td>
                                 <input
                                     type="time"
-                                    name="breaks[{{ $i }}][start]"
-                                    value="{{ old("breaks.$i.start", optional($break?->break_start_at)->format('H:i')) }}"
+                                    name="breaks[{{ $index }}][start]"
+                                    value="{{ old("breaks.$index.start", optional($break?->break_start_at)->format('H:i')) }}"
                                     @if ($isPending) disabled @endif
                                 >
 
@@ -102,21 +90,21 @@
 
                                 <input
                                     type="time"
-                                    name="breaks[{{ $i }}][end]"
-                                    value="{{ old("breaks.$i.end", optional($break?->break_end_at)->format('H:i')) }}"
+                                    name="breaks[{{ $index }}][end]"
+                                    value="{{ old("breaks.$index.end", optional($break?->break_end_at)->format('H:i')) }}"
                                     @if ($isPending) disabled @endif
                                 >
 
-                                @error("breaks.$i.start")
+                                @error("breaks.$index.start")
                                     <p class="admin-attendance-show__error">{{ $message }}</p>
                                 @enderror
 
-                                @error("breaks.$i.end")
+                                @error("breaks.$index.end")
                                     <p class="admin-attendance-show__error">{{ $message }}</p>
                                 @enderror
                             </td>
                         </tr>
-                    @endfor
+                    @endforeach
 
                     <tr>
                         <th>備考</th>
@@ -135,9 +123,13 @@
                 </table>
 
                 <div class="admin-attendance-show__button-wrap">
-                    @if ($isPending || session('error'))
+                    @if ($isPending)
                         <p class="admin-attendance-show__pending-message">
                             *承認待ちのため修正はできません。
+                        </p>
+                    @elseif (session('pendingCorrectionError'))
+                        <p class="admin-attendance-show__pending-message">
+                            *{{ session('pendingCorrectionError') }}
                         </p>
                     @else
                         <button type="submit" class="admin-attendance-show__submit-button">

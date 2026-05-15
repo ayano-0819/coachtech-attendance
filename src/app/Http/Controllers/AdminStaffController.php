@@ -9,21 +9,15 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminStaffController extends Controller
 {
-    /**
-     * スタッフ一覧表示
-     */
     public function index()
     {
-        $staffs = User::where('role', 0)
+        $staffs = User::where('role', User::ROLE_USER)
             ->orderBy('id')
             ->get();
 
         return view('admin.staff.index', compact('staffs'));
     }
 
-    /**
-    * スタッフ別勤怠CSV出力
-    */
     public function exportCsv($id)
     {
         $user = User::findOrFail($id);
@@ -47,10 +41,14 @@ class AdminStaffController extends Controller
 
         $fileName = $user->name . '_' . $currentMonth->format('Y-m') . '_attendance.csv';
 
-        $response = new StreamedResponse(function () use ($user, $currentMonth, $startOfMonth, $endOfMonth, $attendances) {
+        $response = new StreamedResponse(function () use (
+            $startOfMonth,
+            $endOfMonth,
+            $attendances
+        ) {
+
             $handle = fopen('php://output', 'w');
 
-            // Excelで文字化けしないようにBOMを付ける
             fwrite($handle, "\xEF\xBB\xBF");
 
             fputcsv($handle, [
@@ -65,12 +63,20 @@ class AdminStaffController extends Controller
                 $dateKey = $date->format('Y-m-d');
                 $attendance = $attendances->get($dateKey);
 
+                $breakTime = $attendance && !is_null($attendance->clock_in_at)
+                    ? $attendance->break_total
+                    : '';
+
+                $workTime = $attendance && !is_null($attendance->clock_in_at)
+                    ? $attendance->work_total
+                    : '';
+
                 fputcsv($handle, [
                     $date->format('Y/m/d') . '(' . $date->isoFormat('ddd') . ')',
                     $attendance ? optional($attendance->clock_in_at)->format('H:i') : '',
                     $attendance ? optional($attendance->clock_out_at)->format('H:i') : '',
-                    $attendance ? $attendance->break_total : '',
-                    $attendance ? $attendance->work_total : '',
+                    $breakTime,
+                    $workTime,
                 ]);
             }
 

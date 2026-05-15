@@ -24,29 +24,32 @@
         <div class="attendance-create__main">
 
             <div class="attendance-create__status">
-                {{ $status }}
+                {{ $statusLabel }}
             </div>
 
             <p class="attendance-create__date">
-                {{ now()->format('Y年n月j日') }}
-                ({{ ['日','月','火','水','木','金','土'][now()->dayOfWeek] }})
+                {{ $currentDate }}
+                ({{ $currentWeekday }})
             </p>
 
             <p class="attendance-create__time">
-                {{ now()->format('H:i') }}
+                {{ $currentTime }}
             </p>
 
-            @if ($status === '勤務外')
+            @if ($status === 'off_work')
                 <form method="POST" action="{{ route('attendance.clockIn') }}">
                     @csrf
+
                     <button type="submit" class="attendance-create__clock-in-button">
                         出勤
                     </button>
                 </form>
-            @elseif ($status === '出勤中')
+
+            @elseif ($status === 'working')
                 <div class="attendance-create__buttons">
                     <form method="POST" action="{{ route('attendance.clockOut') }}">
                         @csrf
+
                         <button type="submit" class="attendance-create__clock-out-button">
                             退勤
                         </button>
@@ -54,24 +57,27 @@
 
                     <form method="POST" action="{{ route('attendance.breakStart') }}">
                         @csrf
+
                         <button type="submit" class="attendance-create__break-start-button">
                             休憩入
                         </button>
                     </form>
                 </div>
-            @elseif ($status === '休憩中')
+
+            @elseif ($status === 'on_break')
                 <form method="POST" action="{{ route('attendance.breakEnd') }}">
                     @csrf
+
                     <button type="submit" class="attendance-create__break-end-button">
                         休憩戻
                     </button>
                 </form>
-            @elseif ($status === '退勤済')
+
+            @elseif ($status === 'finished')
                 <p class="attendance-create__message">
                     お疲れ様でした。
                 </p>
             @endif
-
         </div>
     </div>
 @endsection

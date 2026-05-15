@@ -17,7 +17,7 @@ class AdminAttendanceDetailTest extends TestCase
      */
     public function test_admin_can_see_selected_attendance_detail()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create(['name' => '詳細ユーザー']);
 
         $attendance = Attendance::create([
@@ -52,7 +52,7 @@ class AdminAttendanceDetailTest extends TestCase
      */
     public function test_clock_in_after_clock_out_fails()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create();
 
         $attendance = Attendance::create([
@@ -74,7 +74,7 @@ class AdminAttendanceDetailTest extends TestCase
      */
     public function test_break_start_after_clock_out_fails()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create();
 
         $attendance = Attendance::create([
@@ -102,7 +102,7 @@ class AdminAttendanceDetailTest extends TestCase
      */
     public function test_break_end_after_clock_out_fails()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create();
 
         $attendance = Attendance::create([
@@ -130,7 +130,7 @@ class AdminAttendanceDetailTest extends TestCase
      */
     public function test_note_is_required()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create();
 
         $attendance = Attendance::create([

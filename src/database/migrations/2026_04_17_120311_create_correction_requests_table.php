@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCorrectionRequestsTable extends Migration
 {
-    
     public function up()
     {
         Schema::create('correction_requests', function (Blueprint $table) {

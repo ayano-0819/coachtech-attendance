@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAttendanceBreaksTable extends Migration
 {
-
     public function up()
     {
         Schema::create('attendance_breaks', function (Blueprint $table) {

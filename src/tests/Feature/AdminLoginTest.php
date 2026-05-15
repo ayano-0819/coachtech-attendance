@@ -48,7 +48,7 @@ class AdminLoginTest extends TestCase
         User::factory()->create([
             'email' => 'admin@example.com',
             'password' => bcrypt('password123'),
-            'role' => 1,
+            'role' => User::ROLE_ADMIN,
         ]);
 
         $response = $this->post('/admin/login', [

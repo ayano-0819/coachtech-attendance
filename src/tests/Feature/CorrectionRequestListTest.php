@@ -49,7 +49,7 @@ class CorrectionRequestListTest extends TestCase
     {
         $user = User::factory()->create();
         $admin = User::factory()->create([
-            'role' => 1,
+            'role' => User::ROLE_ADMIN,
         ]);
 
         $attendance = Attendance::create([

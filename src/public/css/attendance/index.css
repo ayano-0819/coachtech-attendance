@@ -92,7 +92,6 @@
     border-bottom: 0.0625rem solid #e5e5e5;
 }
 
-/* 日付列 */
 .attendance-index__table th:nth-child(1),
 .attendance-index__table td:nth-child(1) {
     width: 10.5rem;
@@ -100,13 +99,11 @@
     text-align: left;
 }
 
-/* 詳細列 */
 .attendance-index__table th:nth-child(6),
 .attendance-index__table td:nth-child(6) {
     width: 6rem;
 }
 
-/* 日付データだけ少し大きくする */
 .attendance-index__table td:first-child {
     font-size: 1.1rem;
 }
@@ -121,7 +118,6 @@
     border-bottom: none;
 }
 
-/* PC要件：1400〜1540px */
 @media screen and (min-width: 87.5rem) and (max-width: 96.25rem) {
     .attendance-index {
         padding-top: 4.5rem;
@@ -132,7 +128,6 @@
     }
 }
 
-/* スマホ幅 */
 @media screen and (max-width: 768px) {
     .attendance-index {
         padding: 3rem 1rem;

@@ -14,7 +14,12 @@
         <div class="login__inner">
             <h1 class="login__title">ログイン</h1>
 
-            <form method="POST" action="{{ route('login') }}" novalidate class="login__form">
+            <form
+                method="POST"
+                action="{{ route('login') }}"
+                novalidate
+                class="login__form"
+            >
                 @csrf
 
                 <input type="hidden" name="login_type" value="user">

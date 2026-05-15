@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAttendancesTable extends Migration
 {
-
     public function up()
     {
         Schema::create('attendances', function (Blueprint $table) {
@@ -20,8 +19,6 @@ class CreateAttendancesTable extends Migration
 
             $table->dateTime('clock_in_at')->nullable();
             $table->dateTime('clock_out_at')->nullable();
-
-            $table->unsignedTinyInteger('status')->default(0);
 
             $table->text('note')->nullable();
 

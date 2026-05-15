@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder
                 [
                     'name' => $user['name'],
                     'password' => Hash::make('password'),
-                    'role' => 0,
+                    'role' => User::ROLE_USER,
                 ]
             );
         }

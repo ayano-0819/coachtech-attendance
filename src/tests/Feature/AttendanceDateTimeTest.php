@@ -20,7 +20,7 @@ class AttendanceDateTimeTest extends TestCase
 
         $user = User::factory()->create([
             'email_verified_at' => now(),
-            'role' => 0,
+            'role' => User::ROLE_USER,
         ]);
 
         $response = $this->actingAs($user)->get('/attendance');

@@ -17,7 +17,7 @@ class AdminStaffTest extends TestCase
      */
     public function test_admin_can_see_all_users()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user1 = User::factory()->create([
             'name' => 'ユーザー1',
@@ -44,7 +44,7 @@ class AdminStaffTest extends TestCase
      */
     public function test_admin_can_see_selected_user_attendance()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create(['name' => '対象ユーザー']);
 
@@ -69,7 +69,7 @@ class AdminStaffTest extends TestCase
      */
     public function test_previous_month_is_displayed()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create();
 
@@ -91,7 +91,7 @@ class AdminStaffTest extends TestCase
      */
     public function test_next_month_is_displayed()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create();
 
@@ -113,7 +113,7 @@ class AdminStaffTest extends TestCase
      */
     public function test_can_go_to_attendance_detail()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create();
 

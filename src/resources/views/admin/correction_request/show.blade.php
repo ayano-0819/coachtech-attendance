@@ -76,7 +76,7 @@
             </table>
 
             <div class="correction-request-show__button-wrap">
-                @if ($correctionRequest->status === 0)
+                @if ($correctionRequest->is_pending)
                     <form method="POST" action="{{ route('correction-requests.approve', $correctionRequest->id) }}">
                         @csrf
                         <button type="submit" class="correction-request-show__submit-button">
@@ -84,7 +84,10 @@
                         </button>
                     </form>
                 @else
-                    <button type="button" class="correction-request-show__submit-button correction-request-show__submit-button--disabled" disabled>
+                    <button
+                        type="button"
+                        class="correction-request-show__submit-button correction-request-show__submit-button--disabled" disabled
+                    >
                         承認済み
                     </button>
                 @endif

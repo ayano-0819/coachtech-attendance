@@ -20,9 +20,6 @@ class AttendanceBreak extends Model
         'break_end_at' => 'datetime',
     ];
 
-    /**
-     * この休憩が属する勤怠
-     */
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);

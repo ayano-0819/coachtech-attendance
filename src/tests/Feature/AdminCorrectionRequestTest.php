@@ -17,7 +17,7 @@ class AdminCorrectionRequestTest extends TestCase
      */
     public function test_pending_correction_requests_are_displayed()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create(['name' => '申請ユーザー']);
 
         $attendance = Attendance::create([
@@ -48,7 +48,7 @@ class AdminCorrectionRequestTest extends TestCase
      */
     public function test_approved_correction_requests_are_displayed()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create(['name' => '承認済みユーザー']);
 
         $attendance = Attendance::create([
@@ -81,7 +81,7 @@ class AdminCorrectionRequestTest extends TestCase
      */
     public function test_correction_request_detail_is_displayed_correctly()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create(['name' => '詳細ユーザー']);
 
         $attendance = Attendance::create([
@@ -113,7 +113,7 @@ class AdminCorrectionRequestTest extends TestCase
      */
     public function test_admin_can_approve_correction_request()
     {
-        $admin = User::factory()->create(['role' => 1]);
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $user = User::factory()->create();
 
         $attendance = Attendance::create([

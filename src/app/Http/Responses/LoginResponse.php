@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Models\User;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class LoginResponse implements LoginResponseContract
@@ -10,12 +11,10 @@ class LoginResponse implements LoginResponseContract
     {
         $user = auth()->user();
 
-        // 管理者なら管理者用勤怠一覧へ
-        if ($user->role === 1) {
+        if ($user->role === User::ROLE_ADMIN) {
             return redirect()->route('admin.attendance.index');
         }
 
-        // 一般ユーザーなら勤怠登録画面へ
         return redirect()->route('attendance.create');
     }
 }

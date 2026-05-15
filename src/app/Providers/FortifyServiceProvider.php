@@ -27,13 +27,11 @@ class FortifyServiceProvider extends ServiceProvider
             \App\Actions\Fortify\CreateNewUser::class
         );
 
-         // ログイン後の遷移先を role によって切り替える
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \App\Http\Responses\LoginResponse::class
         );
 
-        // ログアウト後の遷移先をアクセス元によって切り替える
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LogoutResponse::class,
             \App\Http\Responses\LogoutResponse::class
@@ -67,7 +65,7 @@ class FortifyServiceProvider extends ServiceProvider
                 )->validate();
 
                 $user = User::where('email', $request->email)
-                    ->where('role', 1)
+                    ->where('role', User::ROLE_ADMIN)
                     ->first();
             } else {
                 $form = app(LoginRequest::class);
@@ -79,7 +77,7 @@ class FortifyServiceProvider extends ServiceProvider
                 )->validate();
 
                 $user = User::where('email', $request->email)
-                    ->where('role', 0)
+                    ->where('role', User::ROLE_USER)
                     ->first();
             }
 

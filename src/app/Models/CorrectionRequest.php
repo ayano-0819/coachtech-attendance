@@ -9,6 +9,9 @@ class CorrectionRequest extends Model
 {
     use HasFactory;
 
+    public const STATUS_PENDING = 0;
+    public const STATUS_APPROVED = 1;
+    
     protected $fillable = [
         'user_id',
         'attendance_id',
@@ -26,35 +29,37 @@ class CorrectionRequest extends Model
         'approved_at' => 'datetime',
     ];
 
-    /**
-     * 修正申請を出したユーザー
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * 対象の勤怠
-     */
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }
 
-    /**
-     * 承認した管理者
-     */
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
 
-    /**
-     * この修正申請に紐づく休憩修正一覧
-     */
     public function correctionRequestBreaks()
     {
         return $this->hasMany(CorrectionRequestBreak::class);
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        if ($this->status === self::STATUS_PENDING) {
+            return '承認待ち';
+        }
+
+        return '承認済み';
+    }
+
+    public function getIsPendingAttribute()
+    {
+        return $this->status === self::STATUS_PENDING;
     }
 }

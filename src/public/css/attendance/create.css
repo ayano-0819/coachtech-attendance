@@ -87,7 +87,6 @@
     letter-spacing: 0.08em;
 }
 
-/* PC要件：1400〜1540pxで崩れないように調整 */
 @media screen and (min-width: 87.5rem) and (max-width: 96.25rem) {
     .attendance-create {
         padding-top: 6.5rem;
@@ -98,7 +97,6 @@
     }
 }
 
-/* 狭い幅でも最低限崩れないようにする */
 @media screen and (max-width: 768px) {
     .attendance-create {
         padding: 4rem 1rem;

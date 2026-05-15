@@ -25,7 +25,10 @@
         <div class="correction-request-index__inner">
             <h1 class="correction-request-index__title">申請一覧</h1>
 
-            <div class="correction-request-index__tabs">
+            <nav
+                class="correction-request-index__tabs"
+                aria-label="申請状態切り替え"
+            >
                 <a
                     href="{{ route('correction-requests.index', ['status' => 'pending']) }}"
                     class="correction-request-index__tab {{ $status === 'pending' ? 'correction-request-index__tab--active' : '' }}"
@@ -39,50 +42,52 @@
                 >
                     承認済み
                 </a>
-            </div>
+            </nav>
 
             <div class="correction-request-index__table-wrap">
                 <table class="correction-request-index__table">
-                    <tr>
-                        <th>状態</th>
-                        <th>名前</th>
-                        <th>対象日時</th>
-                        <th>申請理由</th>
-                        <th>申請日時</th>
-                        <th>詳細</th>
-                    </tr>
-
-                    @foreach ($correctionRequests as $correctionRequest)
+                    <thead>
                         <tr>
-                            <td>
-                                @if ($correctionRequest->status === 0)
-                                    承認待ち
-                                @elseif ($correctionRequest->status === 1)
-                                    承認済み
-                                @else
-                                    却下
-                                @endif
-                            </td>
-
-                            <td>{{ $correctionRequest->user->name }}</td>
-
-                            <td>
-                                {{ $correctionRequest->attendance->work_date->format('Y/m/d') }}
-                            </td>
-
-                            <td>{{ $correctionRequest->requested_note }}</td>
-
-                            <td>
-                                {{ $correctionRequest->created_at->format('Y/m/d') }}
-                            </td>
-
-                            <td>
-                                <a href="/stamp_correction_request/approve/{{ $correctionRequest->id }}">
-                                    詳細
-                                </a>
-                            </td>
+                            <th>状態</th>
+                            <th>名前</th>
+                            <th>対象日時</th>
+                            <th>申請理由</th>
+                            <th>申請日時</th>
+                            <th>詳細</th>
                         </tr>
-                    @endforeach
+                    </thead>
+
+                    <tbody>
+                        @foreach ($correctionRequests as $correctionRequest)
+                            <tr>
+                                <td>
+                                    {{ $correctionRequest->status_label }}
+                                </td>
+
+                                <td>
+                                    {{ $correctionRequest->user->name }}
+                                </td>
+
+                                <td>
+                                    {{ $correctionRequest->attendance->work_date->format('Y/m/d') }}
+                                </td>
+
+                                <td>
+                                    {{ $correctionRequest->requested_note }}
+                                </td>
+                                
+                                <td>
+                                    {{ $correctionRequest->created_at->format('Y/m/d') }}
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('correction-requests.show', ['attendance_correct_request_id' => $correctionRequest->id]) }}">
+                                    詳細
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>

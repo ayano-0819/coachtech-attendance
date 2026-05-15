@@ -1,7 +1,6 @@
 .login {
     min-height: calc(100vh - 4rem);
     padding: 4rem 1rem;
-    /* ← registerと同じ */
     background-color: #ffffff;
 }
 
@@ -12,7 +11,6 @@
 
 .login__title {
     margin: 0 0 4rem;
-    /* ← registerと同じ */
     text-align: center;
     font-size: 1.8rem;
     font-weight: 700;
@@ -25,7 +23,6 @@
 
 .login__group {
     margin-bottom: 3rem;
-    /* ← registerと同じ */
 }
 
 .login__label {
@@ -53,7 +50,6 @@
 
 .login__button-area {
     margin-top: 4.5rem;
-    /* ← registerと同じ */
 }
 
 .login__button {
