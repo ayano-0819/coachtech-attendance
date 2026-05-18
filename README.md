@@ -159,12 +159,12 @@ php artisan db:seed
 
 | カラム名 | 型 | primary key | unique key | not null | foreign key |
 |---|---|---|---|---|---|
-| id | bigint | ○ |  | ○ |  |
+| id | unsigned bigint | ○ |  | ○ |  |
 | name | varchar(255) |  |  | ○ |  |
 | email | varchar(255) |  | ○ | ○ |  |
 | email_verified_at | timestamp |  |  |  |  |
 | password | varchar(255) |  |  | ○ |  |
-| role | tinyInteger |  |  | ○ |  |
+| role | unsigned tinyint |  |  | ○ |  |
 | remember_token | varchar(100) |  |  |  |  |
 | created_at | timestamp |  |  |  |  |
 | updated_at | timestamp |  |  |  |  |
@@ -173,8 +173,8 @@ php artisan db:seed
 
 | カラム名 | 型 | primary key | unique key | not null | foreign key |
 |---|---|---|---|---|---|
-| id | bigint | ○ |  | ○ |  |
-| user_id | bigint |  | ○(work_dateとの組み合わせ) | ○ | users(id) |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  | ○(work_dateとの組み合わせ) | ○ | users(id) |
 | work_date | date |  | ○(user_idとの組み合わせ) | ○ |  |
 | clock_in_at | datetime |  |  |  |  |
 | clock_out_at | datetime |  |  |  |  |
@@ -186,25 +186,25 @@ php artisan db:seed
 
 | カラム名 | 型 | primary key | unique key | not null | foreign key |
 |---|---|---|---|---|---|
-| id | bigint | ○ |  | ○ |  |
-| attendance_id | bigint |  |  | ○ | attendances(id) |
+| id | unsigned bigint | ○ |  | ○ |  |
+| attendance_id | unsigned bigint |  |  | ○ | attendances(id) |
 | break_start_at | datetime |  |  |  |  |
 | break_end_at | datetime |  |  |  |  |
 | created_at | timestamp |  |  |  |  |
 | updated_at | timestamp |  |  |  |  |
 
-## correction_requestsテーブル
+### correction_requestsテーブル
 
 | カラム名 | 型 | primary key | unique key | not null | foreign key |
 |---|---|---|---|---|---|
-| id | bigint | ○ |  | ○ |  |
-| user_id | bigint |  |  | ○ | users(id) |
-| attendance_id | bigint |  |  | ○ | attendances(id) |
+| id | unsigned bigint | ○ |  | ○ |  |
+| user_id | unsigned bigint |  |  | ○ | users(id) |
+| attendance_id | unsigned bigint |  |  | ○ | attendances(id) |
 | requested_clock_in_at | datetime |  |  | ○ |  |
 | requested_clock_out_at | datetime |  |  | ○ |  |
 | requested_note | text |  |  | ○ |  |
-| status | tinyInteger |  |  | ○ |  |
-| admin_id | bigint |  |  |  | users(id) |
+| status | unsigned tinyint |  |  | ○ |  |
+| admin_id | unsigned bigint |  |  |  | users(id) |
 | approved_at | datetime |  |  |  |  |
 | created_at | timestamp |  |  |  |  |
 | updated_at | timestamp |  |  |  |  |
@@ -217,8 +217,8 @@ php artisan db:seed
 
 | カラム名 | 型 | primary key | unique key | not null | foreign key |
 |---|---|---|---|---|---|
-| id | bigint | ○ |  | ○ |  |
-| correction_request_id | bigint |  |  | ○ | correction_requests(id) |
+| id | unsigned bigint | ○ |  | ○ |  |
+| correction_request_id | unsigned bigint |  |  | ○ | correction_requests(id) |
 | requested_break_start_at | datetime |  |  |  |  |
 | requested_break_end_at | datetime |  |  |  |  |
 | created_at | timestamp |  |  |  |  |
