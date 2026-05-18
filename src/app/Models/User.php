@@ -33,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'role' => 'integer',
     ];
 
     public function attendances()
@@ -53,5 +54,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin()
     {
         return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function hasVerifiedEmail()
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        return !is_null($this->email_verified_at);
     }
 }
