@@ -12,9 +12,6 @@ class AdminCorrectionRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 承認待ちの修正申請が全て表示される
-     */
     public function test_pending_correction_requests_are_displayed()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -31,11 +28,11 @@ class AdminCorrectionRequestTest extends TestCase
             'requested_clock_in_at' => '2026-04-10 10:00:00',
             'requested_clock_out_at' => '2026-04-10 19:00:00',
             'requested_note' => '承認待ちテスト',
-            'status' => 0,
+            'status' => CorrectionRequest::STATUS_PENDING,
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/stamp_correction_request/list');
+            ->get(route('correction-requests.index'));
 
         $response->assertStatus(200);
         $response->assertSee('申請ユーザー');
@@ -43,9 +40,6 @@ class AdminCorrectionRequestTest extends TestCase
         $response->assertSee('承認待ち');
     }
 
-    /**
-     * 承認済みの修正申請が全て表示される
-     */
     public function test_approved_correction_requests_are_displayed()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -62,13 +56,13 @@ class AdminCorrectionRequestTest extends TestCase
             'requested_clock_in_at' => '2026-04-10 10:00:00',
             'requested_clock_out_at' => '2026-04-10 19:00:00',
             'requested_note' => '承認済みテスト',
-            'status' => 1,
+            'status' => CorrectionRequest::STATUS_APPROVED,
             'admin_id' => $admin->id,
             'approved_at' => now(),
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/stamp_correction_request/list?status=approved');
+            ->get(route('correction-requests.index', ['status' => 'approved']));
 
         $response->assertStatus(200);
         $response->assertSee('承認済みユーザー');
@@ -76,9 +70,6 @@ class AdminCorrectionRequestTest extends TestCase
         $response->assertSee('承認済み');
     }
 
-    /**
-     * 修正申請の詳細内容が正しく表示される
-     */
     public function test_correction_request_detail_is_displayed_correctly()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -95,11 +86,13 @@ class AdminCorrectionRequestTest extends TestCase
             'requested_clock_in_at' => '2026-04-10 10:00:00',
             'requested_clock_out_at' => '2026-04-10 19:00:00',
             'requested_note' => '詳細内容テスト',
-            'status' => 0,
+            'status' => CorrectionRequest::STATUS_PENDING,
         ]);
 
         $response = $this->actingAs($admin)
-            ->get("/stamp_correction_request/approve/{$correction->id}");
+            ->get(route('correction-requests.show', [
+                'attendance_correct_request_id' => $correction->id,
+            ]));
 
         $response->assertStatus(200);
         $response->assertSee('詳細ユーザー');
@@ -108,9 +101,6 @@ class AdminCorrectionRequestTest extends TestCase
         $response->assertSee('詳細内容テスト');
     }
 
-    /**
-     * 修正申請の承認処理が正しく行われる
-     */
     public function test_admin_can_approve_correction_request()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -129,17 +119,19 @@ class AdminCorrectionRequestTest extends TestCase
             'requested_clock_in_at' => '2026-04-10 10:00:00',
             'requested_clock_out_at' => '2026-04-10 19:00:00',
             'requested_note' => '承認処理テスト',
-            'status' => 0,
+            'status' => CorrectionRequest::STATUS_PENDING,
         ]);
 
         $response = $this->actingAs($admin)
-            ->post("/stamp_correction_request/approve/{$correction->id}");
+            ->post(route('correction-requests.approve', [
+                'attendance_correct_request_id' => $correction->id,
+            ]));
 
         $response->assertStatus(302);
 
         $this->assertDatabaseHas('correction_requests', [
             'id' => $correction->id,
-            'status' => 1,
+            'status' => CorrectionRequest::STATUS_APPROVED,
             'admin_id' => $admin->id,
         ]);
 

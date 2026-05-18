@@ -13,14 +13,11 @@ class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 会員登録後、認証メールが送信される
-     */
     public function test_verification_email_is_sent_on_register()
     {
         Notification::fake();
 
-        $this->post('/register', [
+        $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => 'password123',
@@ -32,9 +29,6 @@ class EmailVerificationTest extends TestCase
         Notification::assertSentTo($user, VerifyEmail::class);
     }
 
-    /**
-     * 認証リンクからアクセスできる
-     */
     public function test_email_verification_link_works()
     {
         $user = User::factory()->create([
@@ -52,13 +46,10 @@ class EmailVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->get($verificationUrl);
 
-        $response->assertRedirect('/attendance?verified=1');
+        $response->assertRedirect(route('attendance.create') . '?verified=1');
         $this->assertNotNull($user->fresh()->email_verified_at);
     }
 
-    /**
-     * 認証後に勤怠登録画面へ遷移
-     */
     public function test_user_is_redirected_to_attendance_after_verification()
     {
         $user = User::factory()->create([
@@ -76,6 +67,6 @@ class EmailVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->get($verificationUrl);
 
-        $response->assertRedirect('/attendance?verified=1');
+        $response->assertRedirect(route('attendance.create') . '?verified=1');
     }
 }

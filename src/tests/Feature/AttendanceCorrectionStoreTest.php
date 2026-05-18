@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\CorrectionRequest;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,11 +13,10 @@ class AttendanceCorrectionStoreTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 修正申請が保存される
-     */
     public function test_correction_request_is_stored()
     {
+        Carbon::setTestNow(Carbon::create(2026, 4, 10, 9, 0, 0));
+
         $user = User::factory()->create();
 
         $attendance = Attendance::create([
@@ -26,11 +26,16 @@ class AttendanceCorrectionStoreTest extends TestCase
             'clock_out_at' => '2026-04-10 18:00:00',
         ]);
 
-        $this->actingAs($user)->post("/attendance/detail/{$attendance->id}/correction-request", [
-            'clock_in_at' => '10:00',
-            'clock_out_at' => '19:00',
-            'note' => '修正申請テスト',
-        ]);
+        $response = $this->actingAs($user)
+            ->post(route('correction-requests.store', [
+                'attendance_id' => $attendance->id,
+            ]), [
+                'clock_in_at' => '10:00',
+                'clock_out_at' => '19:00',
+                'note' => '修正申請テスト',
+            ]);
+
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('correction_requests', [
             'user_id' => $user->id,
@@ -38,6 +43,9 @@ class AttendanceCorrectionStoreTest extends TestCase
             'requested_clock_in_at' => '2026-04-10 10:00:00',
             'requested_clock_out_at' => '2026-04-10 19:00:00',
             'requested_note' => '修正申請テスト',
+            'status' => CorrectionRequest::STATUS_PENDING,
         ]);
+
+        Carbon::setTestNow();
     }
 }

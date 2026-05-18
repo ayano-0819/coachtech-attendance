@@ -4,18 +4,17 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+
 
 class AdminLoginTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * メールアドレスが未入力の場合、バリデーションエラー
-     */
     public function test_email_is_required_for_admin_login()
     {
-        $response = $this->post('/admin/login', [
+        $response = $this->post(route('admin.login'), [
             'email' => '',
             'password' => 'password123',
         ]);
@@ -25,12 +24,9 @@ class AdminLoginTest extends TestCase
         ]);
     }
 
-    /**
-     * パスワードが未入力の場合、バリデーションエラー
-     */
     public function test_password_is_required_for_admin_login()
     {
-        $response = $this->post('/admin/login', [
+        $response = $this->post(route('admin.login'), [
             'email' => 'admin@example.com',
             'password' => '',
         ]);
@@ -40,18 +36,15 @@ class AdminLoginTest extends TestCase
         ]);
     }
 
-    /**
-     * 登録内容と一致しない場合、エラー
-     */
     public function test_admin_login_fails_with_invalid_credentials()
     {
         User::factory()->create([
             'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
+            'password' => Hash::make('password123'),
             'role' => User::ROLE_ADMIN,
         ]);
 
-        $response = $this->post('/admin/login', [
+        $response = $this->post(route('admin.login'), [
             'email' => 'admin@example.com',
             'password' => 'wrongpassword',
         ]);

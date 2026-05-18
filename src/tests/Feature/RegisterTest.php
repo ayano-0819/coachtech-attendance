@@ -10,12 +10,9 @@ class RegisterTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 名前が未入力の場合、バリデーションメッセージが表示される
-     */
     public function test_name_is_required()
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register'), [
             'name' => '',
             'email' => 'test@example.com',
             'password' => 'password123',
@@ -27,12 +24,9 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    /**
-     * メールアドレスが未入力の場合、バリデーションメッセージが表示される
-     */
     public function test_email_is_required()
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => '',
             'password' => 'password123',
@@ -44,12 +38,9 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    /**
-     * パスワードが8文字未満の場合、バリデーションメッセージが表示される
-     */
     public function test_password_must_be_at_least_8_characters()
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => 'pass123',
@@ -61,12 +52,9 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    /**
-     * パスワードが一致しない場合、バリデーションメッセージが表示される
-     */
     public function test_password_confirmation_must_match()
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => 'password123',
@@ -78,12 +66,9 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    /**
-     * パスワードが未入力の場合、バリデーションメッセージが表示される
-     */
     public function test_password_is_required()
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => '',
@@ -95,12 +80,9 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    /**
-     * フォームに内容が入力されていた場合、データが正常に保存される
-     */
     public function test_user_can_register()
     {
-        $response = $this->post('/register', [
+        $response = $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => 'password123',

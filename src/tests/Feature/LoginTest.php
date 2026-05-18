@@ -5,17 +5,15 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
 
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * メールアドレスが未入力の場合、バリデーションエラー
-     */
     public function test_email_is_required_for_login()
     {
-        $response = $this->post('/login', [
+        $response = $this->post(route('login'), [
             'email' => '',
             'password' => 'password123',
         ]);
@@ -25,12 +23,9 @@ class LoginTest extends TestCase
         ]);
     }
 
-    /**
-     * パスワードが未入力の場合、バリデーションエラー
-     */
     public function test_password_is_required_for_login()
     {
-        $response = $this->post('/login', [
+        $response = $this->post(route('login'), [
             'email' => 'test@example.com',
             'password' => '',
         ]);
@@ -40,17 +35,14 @@ class LoginTest extends TestCase
         ]);
     }
 
-    /**
-     * 登録内容と一致しない場合、エラー
-     */
     public function test_login_fails_with_invalid_credentials()
     {
         User::factory()->create([
             'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
+            'password' => Hash::make('password123'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('login'), [
             'email' => 'test@example.com',
             'password' => 'wrongpassword',
         ]);
@@ -58,17 +50,14 @@ class LoginTest extends TestCase
         $response->assertSessionHasErrors();
     }
 
-    /**
-     * 正常な場合ログインできる
-     */
     public function test_user_can_login()
     {
         $user = User::factory()->create([
             'email' => 'test@example.com',
-            'password' => bcrypt('password123'),
+            'password' => Hash::make('password123'),
         ]);
 
-        $response = $this->post('/login', [
+        $response = $this->post(route('login'), [
             'email' => 'test@example.com',
             'password' => 'password123',
         ]);

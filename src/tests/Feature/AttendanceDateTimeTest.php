@@ -11,9 +11,6 @@ class AttendanceDateTimeTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 現在の日時情報がUIと同じ形式で出力されている
-     */
     public function test_current_date_and_time_are_displayed()
     {
         Carbon::setTestNow(Carbon::create(2026, 4, 28, 9, 30, 0));
@@ -23,7 +20,8 @@ class AttendanceDateTimeTest extends TestCase
             'role' => User::ROLE_USER,
         ]);
 
-        $response = $this->actingAs($user)->get('/attendance');
+        $response = $this->actingAs($user)
+            ->get(route('attendance.create'));
 
         $response->assertStatus(200);
 

@@ -12,25 +12,22 @@ class AdminStaffTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 全ユーザーの氏名とメールアドレスが表示される
-     */
     public function test_admin_can_see_all_users()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
-        $user1 = User::factory()->create([
+        User::factory()->create([
             'name' => 'ユーザー1',
             'email' => 'user1@test.com',
         ]);
 
-        $user2 = User::factory()->create([
+        User::factory()->create([
             'name' => 'ユーザー2',
             'email' => 'user2@test.com',
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/admin/staff/list');
+            ->get(route('admin.staff.index'));
 
         $response->assertStatus(200);
         $response->assertSee('ユーザー1');
@@ -39,11 +36,10 @@ class AdminStaffTest extends TestCase
         $response->assertSee('user2@test.com');
     }
 
-    /**
-     * 選択したユーザーの勤怠一覧が表示される
-     */
     public function test_admin_can_see_selected_user_attendance()
     {
+        Carbon::setTestNow(Carbon::create(2026, 4, 10, 12, 0, 0));
+
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create(['name' => '対象ユーザー']);
@@ -56,7 +52,10 @@ class AdminStaffTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get("/admin/attendance/staff/{$user->id}");
+            ->get(route('admin.attendance.staff', [
+                'id' => $user->id,
+                'month' => '2026-04',
+            ]));
 
         $response->assertStatus(200);
         $response->assertSee('対象ユーザー');
@@ -64,11 +63,10 @@ class AdminStaffTest extends TestCase
         $response->assertSee('18:00');
     }
 
-    /**
-     * 前月の勤怠情報が表示される
-     */
     public function test_previous_month_is_displayed()
     {
+        Carbon::setTestNow(Carbon::create(2026, 4, 10, 12, 0, 0));
+
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create();
@@ -80,17 +78,19 @@ class AdminStaffTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get("/admin/attendance/staff/{$user->id}?month=2026-03");
+            ->get(route('admin.attendance.staff', [
+                'id' => $user->id,
+                'month' => '2026-03',
+            ]));
 
         $response->assertStatus(200);
         $response->assertSee('2026/03');
     }
 
-    /**
-     * 翌月の勤怠情報が表示される
-     */
     public function test_next_month_is_displayed()
     {
+        Carbon::setTestNow(Carbon::create(2026, 4, 10, 12, 0, 0));
+
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create();
@@ -102,29 +102,35 @@ class AdminStaffTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get("/admin/attendance/staff/{$user->id}?month=2026-05");
+            ->get(route('admin.attendance.staff', [
+                'id' => $user->id,
+                'month' => '2026-05',
+            ]));
 
         $response->assertStatus(200);
         $response->assertSee('2026/05');
     }
 
-    /**
-     * 詳細画面に遷移できる
-     */
     public function test_can_go_to_attendance_detail()
     {
+        Carbon::setTestNow(Carbon::create(2026, 4, 10, 12, 0, 0));
+
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
 
         $user = User::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
-            'work_date' => '2026-04-10',
+            'work_date' => '2026-04-10',    
         ]);
 
         $response = $this->actingAs($admin)
-            ->get("/admin/attendance/staff/{$user->id}?month=2026-04");
+            ->get(route('admin.attendance.staff', [
+                'id' => $user->id,
+                'month' => '2026-04',
+            ]));
 
-        $response->assertSee(route('admin.attendance.show', $attendance->id), false);
+        $response->assertStatus(200);
+        $response->assertSee(route('admin.attendance.show', ['id' => $attendance->id]), false);
     }
 }

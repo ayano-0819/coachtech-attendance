@@ -12,9 +12,6 @@ class AdminAttendanceDetailTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * 勤怠詳細画面に表示されるデータが選択したものになっている
-     */
     public function test_admin_can_see_selected_attendance_detail()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -35,7 +32,7 @@ class AdminAttendanceDetailTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get("/admin/attendance/{$attendance->id}");
+            ->get(route('admin.attendance.show', ['id' => $attendance->id]));
 
         $response->assertStatus(200);
         $response->assertSee('詳細ユーザー');
@@ -47,9 +44,6 @@ class AdminAttendanceDetailTest extends TestCase
         $response->assertSee('13:00');
     }
 
-    /**
-     * 出勤時間が退勤時間より後の場合、エラー
-     */
     public function test_clock_in_after_clock_out_fails()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -60,18 +54,16 @@ class AdminAttendanceDetailTest extends TestCase
             'work_date' => '2026-04-10',
         ]);
 
-        $response = $this->actingAs($admin)->post("/admin/attendance/{$attendance->id}", [
-            'clock_in_at' => '20:00',
-            'clock_out_at' => '10:00',
-            'note' => '修正',
-        ]);
+        $response = $this->actingAs($admin)
+            ->post(route('admin.attendance.update', ['id' => $attendance->id]), [
+                'clock_in_at' => '20:00',
+                'clock_out_at' => '10:00',
+                'note' => '修正',
+            ]);
 
         $response->assertSessionHasErrors();
     }
 
-    /**
-     * 休憩開始時間が退勤時間より後の場合、エラー
-     */
     public function test_break_start_after_clock_out_fails()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -82,24 +74,22 @@ class AdminAttendanceDetailTest extends TestCase
             'work_date' => '2026-04-10',
         ]);
 
-        $response = $this->actingAs($admin)->post("/admin/attendance/{$attendance->id}", [
-            'clock_in_at' => '09:00',
-            'clock_out_at' => '18:00',
-            'breaks' => [
-                [
-                    'start' => '19:00',
-                    'end' => '20:00',
+        $response = $this->actingAs($admin)
+            ->post(route('admin.attendance.update', ['id' => $attendance->id]), [
+                'clock_in_at' => '09:00',
+                'clock_out_at' => '18:00',
+                'breaks' => [
+                    [
+                        'start' => '19:00',
+                        'end' => '20:00',
+                    ],
                 ],
-            ],
-            'note' => '修正',
-        ]);
+                'note' => '修正',
+            ]);
 
         $response->assertSessionHasErrors();
     }
 
-    /**
-     * 休憩終了時間が退勤時間より後の場合、エラー
-     */
     public function test_break_end_after_clock_out_fails()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -110,24 +100,22 @@ class AdminAttendanceDetailTest extends TestCase
             'work_date' => '2026-04-10',
         ]);
 
-        $response = $this->actingAs($admin)->post("/admin/attendance/{$attendance->id}", [
-            'clock_in_at' => '09:00',
-            'clock_out_at' => '18:00',
-            'breaks' => [
-                [
-                    'start' => '17:00',
-                    'end' => '19:00',
+        $response = $this->actingAs($admin)
+            ->post(route('admin.attendance.update', ['id' => $attendance->id]), [
+                'clock_in_at' => '09:00',
+                'clock_out_at' => '18:00',
+                'breaks' => [
+                    [
+                        'start' => '17:00',
+                        'end' => '19:00',
+                    ],
                 ],
-            ],
-            'note' => '修正',
-        ]);
+                'note' => '修正',
+            ]);
 
         $response->assertSessionHasErrors();
     }
 
-    /**
-     * 備考未入力の場合、エラー
-     */
     public function test_note_is_required()
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
@@ -138,11 +126,12 @@ class AdminAttendanceDetailTest extends TestCase
             'work_date' => '2026-04-10',
         ]);
 
-        $response = $this->actingAs($admin)->post("/admin/attendance/{$attendance->id}", [
-            'clock_in_at' => '09:00',
-            'clock_out_at' => '18:00',
-            'note' => '',
-        ]);
+        $response = $this->actingAs($admin)
+            ->post(route('admin.attendance.update', ['id' => $attendance->id]), [
+                'clock_in_at' => '09:00',
+                'clock_out_at' => '18:00',
+                'note' => '',
+            ]);
 
         $response->assertSessionHasErrors();
     }

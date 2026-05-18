@@ -12,9 +12,6 @@ class AdminAttendanceListTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * その日にされた全ユーザーの勤怠情報が確認できる
-     */
     public function test_admin_can_see_all_users_attendance_for_the_day()
     {
         $admin = User::factory()->create([
@@ -44,21 +41,17 @@ class AdminAttendanceListTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/admin/attendance/list?date=2026-04-10');
+            ->get(route('admin.attendance.index', ['date' => '2026-04-10']));
 
         $response->assertStatus(200);
         $response->assertSee('一般ユーザー1');
         $response->assertSee('09:00');
         $response->assertSee('18:00');
-
         $response->assertSee('一般ユーザー2');
         $response->assertSee('10:00');
         $response->assertSee('19:00');
     }
 
-    /**
-     * 遷移した際に現在の日付が表示される
-     */
     public function test_current_date_is_displayed()
     {
         Carbon::setTestNow(Carbon::create(2026, 4, 28));
@@ -67,7 +60,8 @@ class AdminAttendanceListTest extends TestCase
             'role' => User::ROLE_ADMIN,
         ]);
 
-        $response = $this->actingAs($admin)->get('/admin/attendance/list');
+        $response = $this->actingAs($admin)
+            ->get(route('admin.attendance.index'));
 
         $response->assertStatus(200);
         $response->assertSee('2026/04/28');
@@ -75,9 +69,6 @@ class AdminAttendanceListTest extends TestCase
         Carbon::setTestNow();
     }
 
-    /**
-     * 前日ボタンを押した時に前日の勤怠情報が表示される
-     */
     public function test_previous_day_attendance_is_displayed()
     {
         $admin = User::factory()->create([
@@ -96,7 +87,7 @@ class AdminAttendanceListTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/admin/attendance/list?date=2026-04-09');
+            ->get(route('admin.attendance.index', ['date' => '2026-04-09']));
 
         $response->assertStatus(200);
         $response->assertSee('2026/04/09');
@@ -104,9 +95,6 @@ class AdminAttendanceListTest extends TestCase
         $response->assertSee('09:09');
     }
 
-    /**
-     * 翌日ボタンを押した時に翌日の勤怠情報が表示される
-     */
     public function test_next_day_attendance_is_displayed()
     {
         $admin = User::factory()->create([
@@ -125,7 +113,7 @@ class AdminAttendanceListTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/admin/attendance/list?date=2026-04-11');
+            ->get(route('admin.attendance.index', ['date' => '2026-04-11']));
 
         $response->assertStatus(200);
         $response->assertSee('2026/04/11');
