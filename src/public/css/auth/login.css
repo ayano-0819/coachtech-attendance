@@ -43,9 +43,11 @@
 }
 
 .login__error {
-    margin: 0.4rem 0 0;
+    margin: 0.5rem 0 0;
     color: #ff0000;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: normal;
 }
 
 .login__button-area {

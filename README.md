@@ -2,7 +2,7 @@
 coachtech-attendance
 
 ## サービス概要
-ある企業が開発した独自の勤怠管理アプリ
+一般ユーザーの勤怠管理および、管理者による勤怠確認・修正申請承認を行う勤怠管理アプリ
 
 ## 制作の目的
 ユーザーの勤怠と管理を目的とする
@@ -12,6 +12,27 @@ coachtech-attendance
 
 ## 対応環境
 PC（Chrome / Firefox / Safari の最新バージョン）
+
+---
+
+## 主な機能
+
+### 一般ユーザー
+- 会員登録
+- ログイン / ログアウト
+- メール認証
+- 出勤 / 退勤 / 休憩開始 / 休憩終了
+- 勤怠一覧確認
+- 勤怠詳細確認
+- 勤怠修正申請
+
+### 管理者
+- 管理者ログイン
+- 日別全ユーザー勤怠一覧確認
+- スタッフ別勤怠一覧確認
+- 勤怠詳細確認
+- 修正申請承認
+- CSV出力
 
 ---
 
@@ -132,5 +153,78 @@ php artisan db:seed
 
 ---
 
+## テーブル仕様書
+
+### usersテーブル
+
+| カラム名 | 型 | primary key | unique key | not null | foreign key |
+|---|---|---|---|---|---|
+| id | bigint | ○ |  | ○ |  |
+| name | varchar(255) |  |  | ○ |  |
+| email | varchar(255) |  | ○ | ○ |  |
+| email_verified_at | timestamp |  |  |  |  |
+| password | varchar(255) |  |  | ○ |  |
+| role | tinyInteger |  |  | ○ |  |
+| remember_token | varchar(100) |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### attendancesテーブル
+
+| カラム名 | 型 | primary key | unique key | not null | foreign key |
+|---|---|---|---|---|---|
+| id | bigint | ○ |  | ○ |  |
+| user_id | bigint |  | ○(work_dateとの組み合わせ) | ○ | users(id) |
+| work_date | date |  | ○(user_idとの組み合わせ) | ○ |  |
+| clock_in_at | datetime |  |  |  |  |
+| clock_out_at | datetime |  |  |  |  |
+| note | text |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+### attendance_breaksテーブル
+
+| カラム名 | 型 | primary key | unique key | not null | foreign key |
+|---|---|---|---|---|---|
+| id | bigint | ○ |  | ○ |  |
+| attendance_id | bigint |  |  | ○ | attendances(id) |
+| break_start_at | datetime |  |  |  |  |
+| break_end_at | datetime |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+## correction_requestsテーブル
+
+| カラム名 | 型 | primary key | unique key | not null | foreign key |
+|---|---|---|---|---|---|
+| id | bigint | ○ |  | ○ |  |
+| user_id | bigint |  |  | ○ | users(id) |
+| attendance_id | bigint |  |  | ○ | attendances(id) |
+| requested_clock_in_at | datetime |  |  | ○ |  |
+| requested_clock_out_at | datetime |  |  | ○ |  |
+| requested_note | text |  |  | ○ |  |
+| status | tinyInteger |  |  | ○ |  |
+| admin_id | bigint |  |  |  | users(id) |
+| approved_at | datetime |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+#### status
+- 0: 承認待ち
+- 1: 承認済み
+
+### correction_request_breaksテーブル
+
+| カラム名 | 型 | primary key | unique key | not null | foreign key |
+|---|---|---|---|---|---|
+| id | bigint | ○ |  | ○ |  |
+| correction_request_id | bigint |  |  | ○ | correction_requests(id) |
+| requested_break_start_at | datetime |  |  |  |  |
+| requested_break_end_at | datetime |  |  |  |  |
+| created_at | timestamp |  |  |  |  |
+| updated_at | timestamp |  |  |  |  |
+
+---
+
 ## ER図
-![ER図](src/docs/attendance-er-diagram0417.png)
+![ER図](src/docs/attendance-er-diagram0518.png)
