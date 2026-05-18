@@ -62,6 +62,20 @@ class AttendanceController extends Controller
 
             $attendance = $attendances->get($dateKey);
 
+            if (!$attendance) {
+                $attendance = Attendance::firstOrCreate(
+                    [
+                        'user_id' => Auth::id(),
+                        'work_date' => $dateKey,
+                    ],
+                    [
+                        'clock_in_at' => null,
+                        'clock_out_at' => null,
+                        'note' => null,
+                    ]
+                );
+            }
+
             $dates[] = [
                 'date' => $currentDate->copy(),
 
